@@ -36,9 +36,9 @@ function useCart() { return useContext(CartCtx); }
 */
 
 const SETS = [
-  { id: "gelb-vs", name: "SET GELB — BIS 5. SCHULJAHR", short: "Gelb bis 5. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×30 cm) und 12 Klammern. Empfohlen bis zum 5. Schuljahr.", priceAT: 241, priceCH: 238, tag: "VOLKSSCHULE", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
-  { id: "gelb-ms", name: "SET GELB — AB 6. SCHULJAHR", short: "Gelb ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Empfohlen ab dem 6. Schuljahr.", priceAT: 255, priceCH: 252, tag: "MITTELSCHULE+", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
-  { id: "grau-ms", name: "SET GRAU — AB 6. SCHULJAHR", short: "Grau ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Empfohlen ab dem 6. Schuljahr.", priceAT: 255, priceCH: 252, tag: "HÖHERE SCHULEN", color: "#777", img: "/images/koffer-grau.jpg" },
+  { id: "gelb-vs", name: "SET GELB — BIS 5. SCHULJAHR", short: "Gelb bis 5. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×30 cm) und 12 Klammern. Empfohlen bis zum 5. Schuljahr.", priceAT: 241, priceCH: 238, tag: "", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
+  { id: "gelb-ms", name: "SET GELB — AB 6. SCHULJAHR", short: "Gelb ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Empfohlen ab dem 6. Schuljahr.", priceAT: 255, priceCH: 252, tag: "", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
+  { id: "grau-ms", name: "SET GRAU — AB 6. SCHULJAHR", short: "Grau ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Empfohlen ab dem 6. Schuljahr.", priceAT: 255, priceCH: 252, tag: "", color: "#777", img: "/images/koffer-grau.jpg" },
 ];
 
 const PARTS = [
@@ -308,13 +308,13 @@ function Home({ go }) {
               <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der Standard-Sichtschutz für schriftliche Prüfungen an Schulen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem, robuste Verarbeitung, sofort einsatzbereit.</p></Reveal>
               <Reveal delay={0.3}><div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div></Reveal>
             </div>
-            <Reveal delay={0.2}><div style={{ border: `1px solid ${C.border}`, overflow: "hidden", aspectRatio: "1", background: C.bgCard }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "cover" }}/></div></Reveal>
+            <Reveal delay={0.2}><div style={{ border: `1px solid ${C.border}`, overflow: "hidden", aspectRatio: "4/3", background: C.bgCard, display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "contain" }}/></div></Reveal>
           </div>
         </div>
       </section>
       <section style={{ background: C.bgCard, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, padding: "48px 32px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 32 }}>
-          {[{ val: "1000+", label: "SCHULEN BELIEFERT" }, { val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "3", label: "LÄNDER: AT · DE · CH" }, { val: "0 €", label: "VERSAND AB 238 €" }].map((m, i) => (
+          {[{ val: "999+", label: "SCHULEN BELIEFERT" }, { val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "3", label: "LÄNDER: AT · DE · CH" }, { val: "0 €", label: "VERSAND AB 238 €" }].map((m, i) => (
             <Reveal key={i} delay={i * 0.08}><div style={{ textAlign: "center", padding: "12px 0" }}><div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.accent, lineHeight: 1 }}>{m.val}</div><div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", color: C.textMuted, marginTop: 8 }}>{m.label}</div></div></Reveal>
           ))}
         </div>
@@ -361,10 +361,10 @@ function Produkte() {
           <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 48 }}>
             {SETS.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.1}>
-                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: "220px 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card" onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
-                  <div style={{ borderRight: `1px solid ${C.border}`, overflow: "hidden" }}><img src={p.img} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover", minHeight: 220, display: "block" }}/></div>
+                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: "260px 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card" onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                  <div style={{ borderRight: `1px solid ${C.border}`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, background: C.bgElevated }}><img src={p.img} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: 200, display: "block" }}/></div>
                   <div style={{ padding: "28px 32px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <Badge color={p.color === "#777" ? "#777" : C.accent}>{p.tag}</Badge>
+                    {p.tag && <Badge color={p.color === "#777" ? "#777" : C.accent}>{p.tag}</Badge>}
                     <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 26, color: C.text, margin: "12px 0 8px" }}>{p.name}</h3>
                     <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.6, margin: "0 0 20px" }}>{p.desc}</p>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
@@ -427,7 +427,7 @@ function Galerie() {
             {GALLERY.map((r, i) => (
               <Reveal key={i} delay={i * 0.05}>
                 <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, aspectRatio: "16/10", position: "relative", overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
-                  <img src={r.src} alt={r.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}/>
+                  <img src={r.src} alt={r.label} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", padding: 8 }}/>
                   <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "32px 20px 16px", background: "linear-gradient(transparent, rgba(255,255,255,0.95))" }}>
                     <Badge>{r.cat}</Badge>
                     <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 600, color: C.text, marginTop: 6, letterSpacing: "0.04em" }}>{r.label}</div>
