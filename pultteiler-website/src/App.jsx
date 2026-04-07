@@ -7,7 +7,6 @@ const C = {
   dark: "#1A1A1A",
 };
 
-// ─── Cart with Region ───
 const CartCtx = createContext();
 function CartProvider({ children }) {
   const [items, setItems] = useState([]);
@@ -30,31 +29,34 @@ function CartProvider({ children }) {
 }
 function useCart() { return useContext(CartCtx); }
 
-// ─── Products ───
+/*
+  BILDER — genau diese 7 Dateien müssen in /public/images/ liegen:
+  klassenzimmer.png, koffer-gelb.jpg, koffer-grau.jpg,
+  nahaufnahme.jpeg, pultteiler-2.jpg, pultteiler-einsatz.jpg, pultteiler-uni.png
+*/
+
 const SETS = [
   { id: "gelb-vs", name: "SET GELB — BIS 5. SCHULJAHR", short: "Gelb bis 5. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×30 cm) und 12 Klammern. Optimiert für Volksschulpulte.", priceAT: 241, priceCH: 238, tag: "VOLKSSCHULE", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
-  { id: "gelb-ms", name: "SET GELB — AB 6. SCHULJAHR", short: "Gelb ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Für Mittelschul- und Gymnasialpulte.", priceAT: 255, priceCH: 252, tag: "MITTELSCHULE+", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
+  { id: "gelb-ms", name: "SET GELB — AB 6. SCHULJAHR", short: "Gelb ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Für Mittelschul- und Gymnasialpulte.", priceAT: 255, priceCH: 252, tag: "MITTELSCHULE+", color: "#C08B2D", img: "/images/klassenzimmer.png" },
   { id: "grau-ms", name: "SET GRAU — AB 6. SCHULJAHR", short: "Grau ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Dezente graue Variante.", priceAT: 255, priceCH: 252, tag: "HÖHERE SCHULEN", color: "#777", img: "/images/koffer-grau.jpg" },
 ];
 
 const PARTS = [
-  { id: "klammer-2", name: "KLAMMER (2 STÜCK)", short: "2x Klammer", desc: "Hochwertige, dauerelastische Klammer im Doppelpack.", priceAT: 19.40, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/nahaufnahme.jpg" },
-  { id: "platte-a", name: "TEILERPLATTE GELB — 50×30 CM", short: "Platte gelb klein", desc: "Einzelne Ersatzplatte, bis 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 8.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/nahaufnahme.jpg" },
-  { id: "platte-b-gelb", name: "TEILERPLATTE GELB — 50×40 CM", short: "Platte gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/nahaufnahme.jpg" },
-  { id: "platte-b-grau", name: "TEILERPLATTE GRAU — 50×40 CM", short: "Platte grau groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#777", img: "/images/nahaufnahme.jpg" },
+  { id: "klammer-2", name: "KLAMMER (2 STÜCK)", short: "2x Klammer", desc: "Hochwertige, dauerelastische Klammer im Doppelpack.", priceAT: 19.40, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
+  { id: "platte-a", name: "TEILERPLATTE GELB — 50×30 CM", short: "Platte gelb klein", desc: "Einzelne Ersatzplatte, bis 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 8.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
+  { id: "platte-b-gelb", name: "TEILERPLATTE GELB — 50×40 CM", short: "Platte gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/klassenzimmer.png" },
+  { id: "platte-b-grau", name: "TEILERPLATTE GRAU — 50×40 CM", short: "Platte grau groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#777", img: "/images/koffer-grau.jpg" },
   { id: "koffer-leer", name: "KOFFER OHNE INHALT", short: "Holzkoffer leer", desc: "Leerer Holzkoffer als Ersatz. Material: Holz.", priceAT: 43.20, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
 ];
 
 const GALLERY = [
-  { src: "/images/klassenzimmer.jpg", label: "KLASSENZIMMER IM EINSATZ", cat: "PRAXIS" },
-  { src: "/images/koffer-gelb.jpg", label: "HOLZKOFFER GELB", cat: "PRODUKT" },
-  { src: "/images/koffer-grau.jpg", label: "HOLZKOFFER GRAU", cat: "PRODUKT" },
-  { src: "/images/nahaufnahme.jpg", label: "KLAMMER-DETAIL", cat: "DETAIL" },
-  { src: "/images/pultteiler-einsatz.jpg", label: "PULTTEILER IM EINSATZ", cat: "PRAXIS" },
-  { src: "/images/pultteiler-uni.jpg", label: "UNIVERSITÄT HÖRSAAL", cat: "HOCHSCHULE" },
-  { src: "/images/pultteiler-2.jpg", label: "SICHTSCHUTZ AUFGEBAUT", cat: "PRAXIS" },
-  { src: "/images/realschule.jpg", label: "REALSCHULE ST. URSULA", cat: "REFERENZ" },
-  { src: "/images/transparent.jpg", label: "TRANSPARENTE VARIANTE", cat: "PRODUKT" },
+  { src: "/images/klassenzimmer.png", label: "KLASSENZIMMER IM EINSATZ", cat: "PRAXIS" },
+  { src: "/images/pultteiler-uni.png", label: "UNIVERSITÄT HÖRSAAL", cat: "HOCHSCHULE" },
+  { src: "/images/pultteiler-einsatz.jpg", label: "EDV-RAUM MIT SICHTSCHUTZ", cat: "PRAXIS" },
+  { src: "/images/koffer-gelb.jpg", label: "HOLZKOFFER SET GELB", cat: "PRODUKT" },
+  { src: "/images/koffer-grau.jpg", label: "HOLZKOFFER SET GRAU", cat: "PRODUKT" },
+  { src: "/images/pultteiler-2.jpg", label: "PULTTEILER IM GROSSRAUM", cat: "REFERENZ" },
+  { src: "/images/nahaufnahme.jpeg", label: "NAHAUFNAHME TRENNWÄNDE", cat: "DETAIL" },
 ];
 
 const NAV = [
@@ -64,7 +66,6 @@ const NAV = [
   { id: "kontakt", label: "KONTAKT" },
 ];
 
-// ─── Shared ───
 function Nav({ page, setPage }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -146,24 +147,12 @@ function CartSidebar({ onClose }) {
         </div>
         {items.length > 0 && (
           <div style={{ borderTop: `1px solid ${C.border}`, padding: "24px 28px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-              <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Zwischensumme</span>
-              <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.text }}>€ {total.toFixed(2)}</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-              <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Versand ({region === "CH" ? "CH" : "AT/DE"})</span>
-              <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.green }}>{region === "CH" ? "Inkl. Lieferung" : (shipping === 0 ? "Kostenlos" : `€ ${shipping.toFixed(2)}`)}</span>
-            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Zwischensumme</span><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.text }}>€ {total.toFixed(2)}</span></div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Versand ({region === "CH" ? "CH" : "AT/DE"})</span><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.green }}>{region === "CH" ? "Inkl. Lieferung" : (shipping === 0 ? "Kostenlos" : `€ ${shipping.toFixed(2)}`)}</span></div>
             {region !== "CH" && shipping > 0 && <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.accent, margin: "4px 0 12px" }}>Noch € {(238 - total).toFixed(2)} bis zum kostenlosen Versand</p>}
-            <div style={{ display: "flex", justifyContent: "space-between", borderTop: `1px solid ${C.border}`, paddingTop: 16, marginTop: 8, marginBottom: 20 }}>
-              <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.text }}>GESAMT</span>
-              <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.accent }}>€ {(total + shipping).toFixed(2)}</span>
-            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", borderTop: `1px solid ${C.border}`, paddingTop: 16, marginTop: 8, marginBottom: 20 }}><span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.text }}>GESAMT</span><span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.accent }}>€ {(total + shipping).toFixed(2)}</span></div>
             {orderSent ? (
-              <div style={{ textAlign: "center", padding: "12px 0" }}>
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, color: C.green }}>✓ E-MAIL GEÖFFNET</div>
-                <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Senden Sie die vorausgefüllte E-Mail ab.</p>
-              </div>
+              <div style={{ textAlign: "center", padding: "12px 0" }}><div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, color: C.green }}>✓ E-MAIL GEÖFFNET</div><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Senden Sie die vorausgefüllte E-Mail ab.</p></div>
             ) : (
               <button onClick={sendOrder} style={{ width: "100%", background: C.dark, color: C.white, border: "none", padding: "16px", fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", cursor: "pointer" }}>BESTELLUNG PER E-MAIL SENDEN →</button>
             )}
@@ -205,26 +194,10 @@ function Footer({ setPage }) {
   );
 }
 
-function Reveal({ children, delay = 0 }) {
-  const [v, setV] = useState(false); const ref = useRef(null);
-  useEffect(() => { const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setV(true); }, { threshold: 0.12 }); if (ref.current) obs.observe(ref.current); return () => obs.disconnect(); }, []);
-  return <div ref={ref} style={{ opacity: v ? 1 : 0, transform: v ? "translateY(0)" : "translateY(20px)", transition: `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s` }}>{children}</div>;
-}
+function Reveal({ children, delay = 0 }) { const [v, setV] = useState(false); const ref = useRef(null); useEffect(() => { const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setV(true); }, { threshold: 0.12 }); if (ref.current) obs.observe(ref.current); return () => obs.disconnect(); }, []); return <div ref={ref} style={{ opacity: v ? 1 : 0, transform: v ? "translateY(0)" : "translateY(20px)", transition: `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s` }}>{children}</div>; }
 function Badge({ children, color = C.accent }) { return <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color, background: `${color}15`, padding: "5px 12px", display: "inline-block" }}>{children}</span>; }
-function Heading({ overline, title, sub, align = "left" }) {
-  return (<div style={{ textAlign: align, marginBottom: 56 }}>{overline && <div style={{ marginBottom: 16 }}><Badge>{overline}</Badge></div>}<h2 style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(32px, 5vw, 56px)", color: C.text, margin: "0 0 16px", letterSpacing: "0.03em", lineHeight: 1, whiteSpace: "pre-line" }}>{title}</h2>{sub && <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 16, color: C.textMuted, maxWidth: align === "center" ? 560 : "none", margin: align === "center" ? "0 auto" : 0, lineHeight: 1.6 }}>{sub}</p>}</div>);
-}
-function Btn({ children, onClick, variant = "primary", full = false }) {
-  const p = variant === "primary";
-  return <button onClick={onClick} style={{ background: p ? C.dark : "transparent", color: p ? C.white : C.text, border: p ? "none" : `1.5px solid ${C.borderLight}`, padding: "14px 32px", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer", transition: "all 0.2s", width: full ? "100%" : "auto" }}
-    onMouseEnter={e => { if (p) { e.target.style.background = "#333"; e.target.style.transform = "translateY(-2px)"; } else { e.target.style.borderColor = C.accent; e.target.style.color = C.accent; }}}
-    onMouseLeave={e => { if (p) { e.target.style.background = C.dark; e.target.style.transform = "translateY(0)"; } else { e.target.style.borderColor = C.borderLight; e.target.style.color = C.text; }}}>{children}</button>;
-}
-function Img({ src, alt, style = {} }) {
-  const [err, setErr] = useState(false);
-  if (err) return <div style={{ width: "100%", height: "100%", background: C.bgCard, display: "flex", alignItems: "center", justifyContent: "center", color: C.textMuted, fontFamily: "'Inter Tight', sans-serif", fontSize: 12, ...style }}>Bild: {alt}</div>;
-  return <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", ...style }} onError={() => setErr(true)}/>;
-}
+function Heading({ overline, title, sub, align = "left" }) { return (<div style={{ textAlign: align, marginBottom: 56 }}>{overline && <div style={{ marginBottom: 16 }}><Badge>{overline}</Badge></div>}<h2 style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(32px, 5vw, 56px)", color: C.text, margin: "0 0 16px", letterSpacing: "0.03em", lineHeight: 1, whiteSpace: "pre-line" }}>{title}</h2>{sub && <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 16, color: C.textMuted, maxWidth: align === "center" ? 560 : "none", margin: align === "center" ? "0 auto" : 0, lineHeight: 1.6 }}>{sub}</p>}</div>); }
+function Btn({ children, onClick, variant = "primary", full = false }) { const p = variant === "primary"; return <button onClick={onClick} style={{ background: p ? C.dark : "transparent", color: p ? C.white : C.text, border: p ? "none" : `1.5px solid ${C.borderLight}`, padding: "14px 32px", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer", transition: "all 0.2s", width: full ? "100%" : "auto" }} onMouseEnter={e => { if (p) { e.target.style.background = "#333"; e.target.style.transform = "translateY(-2px)"; } else { e.target.style.borderColor = C.accent; e.target.style.color = C.accent; }}} onMouseLeave={e => { if (p) { e.target.style.background = C.dark; e.target.style.transform = "translateY(0)"; } else { e.target.style.borderColor = C.borderLight; e.target.style.color = C.text; }}}>{children}</button>; }
 
 function RegionToggle() {
   const { region, setRegion, clear } = useCart();
@@ -232,11 +205,7 @@ function RegionToggle() {
   return (
     <div style={{ display: "inline-flex", border: `1px solid ${C.border}`, marginBottom: 32 }}>
       {[{ id: "AT", label: "🇦🇹 🇩🇪  ÖSTERREICH & DEUTSCHLAND" }, { id: "CH", label: "🇨🇭  SCHWEIZ" }].map(r => (
-        <button key={r.id} onClick={() => toggle(r.id)} style={{
-          padding: "12px 24px", fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700,
-          letterSpacing: "0.1em", cursor: "pointer", border: "none", transition: "all 0.2s",
-          background: region === r.id ? C.dark : "transparent", color: region === r.id ? C.white : C.textMuted,
-        }}>{r.label}</button>
+        <button key={r.id} onClick={() => toggle(r.id)} style={{ padding: "12px 24px", fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", cursor: "pointer", border: "none", transition: "all 0.2s", background: region === r.id ? C.dark : "transparent", color: region === r.id ? C.white : C.textMuted }}>{r.label}</button>
       ))}
     </div>
   );
@@ -264,7 +233,7 @@ function Home({ go }) {
               <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der Standard-Sichtschutz für schriftliche Prüfungen an Schulen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem, robuste Verarbeitung, sofort einsatzbereit.</p></Reveal>
               <Reveal delay={0.3}><div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div></Reveal>
             </div>
-            <Reveal delay={0.2}><div style={{ border: `1px solid ${C.border}`, overflow: "hidden", aspectRatio: "1", background: C.bgCard }}><Img src="/images/klassenzimmer.jpg" alt="Pultteiler im Klassenzimmer"/></div></Reveal>
+            <Reveal delay={0.2}><div style={{ border: `1px solid ${C.border}`, overflow: "hidden", aspectRatio: "1", background: C.bgCard }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "cover" }}/></div></Reveal>
           </div>
         </div>
       </section>
@@ -287,9 +256,7 @@ function Home({ go }) {
               { num: "05", title: "KOSTENLOSER VERSAND AB 238 €", text: "Frei Haus in Österreich und Deutschland ab einem Koffer. Steuerfreie Lieferung nach DE mit UID-Nummer." },
               { num: "06", title: "E-RECHNUNG FÜR BUNDESSCHULEN", text: "Österreichische Bundesschulen erhalten E-Rechnungen. Einkäufergruppe im Bestellvorgang hinterlegbar." },
             ].map((u, i) => (
-              <Reveal key={i} delay={i * 0.06}><div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "36px 32px", transition: "all 0.3s", cursor: "default", height: "100%" }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.accent; e.currentTarget.style.background = C.bgElevated; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}>
+              <Reveal key={i} delay={i * 0.06}><div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "36px 32px", transition: "all 0.3s", cursor: "default", height: "100%" }} onMouseEnter={e => { e.currentTarget.style.borderColor = C.accent; e.currentTarget.style.background = C.bgElevated; }} onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}>
                 <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 36, color: `${C.accent}40`, lineHeight: 1 }}>{u.num}</span>
                 <h3 style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", color: C.text, margin: "12px 0 10px" }}>{u.title}</h3>
                 <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.65, margin: 0 }}>{u.text}</p>
@@ -316,23 +283,17 @@ function Produkte() {
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <Heading overline="ONLINE-SHOP" title="PRODUKTE & PREISE" sub={region === "CH" ? "Preise steuerfrei, unverzollt, inklusive Lieferung in die Schweiz." : "Alle Preise inkl. MwSt für Österreich und Deutschland."}/>
           <RegionToggle/>
-
-          {/* Sets */}
           <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 48 }}>
             {SETS.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.1}>
-                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: "220px 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card"
-                  onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
-                  <div style={{ borderRight: `1px solid ${C.border}`, overflow: "hidden" }}><Img src={p.img} alt={p.name} style={{ minHeight: 220 }}/></div>
+                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: "220px 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card" onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                  <div style={{ borderRight: `1px solid ${C.border}`, overflow: "hidden" }}><img src={p.img} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover", minHeight: 220, display: "block" }}/></div>
                   <div style={{ padding: "28px 32px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <Badge color={p.color === "#777" ? "#777" : C.accent}>{p.tag}</Badge>
                     <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 26, color: C.text, margin: "12px 0 8px" }}>{p.name}</h3>
                     <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.6, margin: "0 0 20px" }}>{p.desc}</p>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-                      <div>
-                        <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 36, color: C.text }}>€ {getPrice(p).toFixed(2)}</span>
-                        <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.textMuted, marginLeft: 8 }}>{region === "CH" ? "STEUERFREI" : "INKL. MWST"}</span>
-                      </div>
+                      <div><span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 36, color: C.text }}>€ {getPrice(p).toFixed(2)}</span><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.textMuted, marginLeft: 8 }}>{region === "CH" ? "STEUERFREI" : "INKL. MWST"}</span></div>
                       <AddToCartBtn product={p}/>
                     </div>
                   </div>
@@ -340,16 +301,13 @@ function Produkte() {
               </Reveal>
             ))}
           </div>
-
-          {/* Ersatzteile — nur AT/DE */}
           {region === "AT" && (
             <>
               <Heading overline="ERSATZTEILE" title="EINZELTEILE NACHBESTELLEN" sub="Alle Ersatzteile inkl. MwSt für Österreich und Deutschland. Versandkosten: € 8,70."/>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 2 }}>
                 {PARTS.map((p, i) => (
                   <Reveal key={p.id} delay={i * 0.08}>
-                    <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "28px 24px", transition: "border-color 0.3s" }}
-                      onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                    <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "28px 24px", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
                       <Badge>{p.tag}</Badge>
                       <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.text, margin: "10px 0 6px" }}>{p.name}</h4>
                       <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.5, margin: "0 0 20px" }}>{p.desc}</p>
@@ -363,8 +321,6 @@ function Produkte() {
               </div>
             </>
           )}
-
-          {/* Shipping info */}
           <Reveal delay={0.2}>
             <div style={{ marginTop: 32, background: `${C.green}08`, border: `1px solid ${C.green}25`, padding: "24px 28px", display: "flex", gap: 12, alignItems: "flex-start" }}>
               <div style={{ width: 32, height: 32, background: `${C.green}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -373,19 +329,13 @@ function Produkte() {
               <div>
                 <h4 style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.text, margin: "0 0 6px" }}>VERSAND & ZAHLUNG</h4>
                 {region === "CH" ? (
-                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>Schweiz: <span style={{ color: C.green, fontWeight: 600 }}>Lieferung inklusive</span>. Unverzollte Lieferung, steuerfrei. Zahlung per Rechnung.</p>
+                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>Schweiz: <span style={{ color: C.green, fontWeight: 600 }}>Lieferung inklusive</span>. Unverzollte Lieferung, steuerfrei. Zahlung per Rechnung. Ersatzteile auf Anfrage.</p>
                 ) : (
                   <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>AT & DE: € 8,70 — <span style={{ color: C.green, fontWeight: 600 }}>kostenlos ab € 238</span>. Zahlung per Rechnung. Steuerfreie Lieferung nach DE mit UID. E-Rechnungen für österr. Bundesschulen.</p>
                 )}
               </div>
             </div>
           </Reveal>
-
-          {region === "CH" && (
-            <Reveal delay={0.25}>
-              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, marginTop: 24, fontStyle: "italic" }}>Ersatzteile für die Schweiz auf Anfrage — bitte kontaktieren Sie uns direkt.</p>
-            </Reveal>
-          )}
         </div>
       </section>
     </div>
@@ -401,9 +351,8 @@ function Galerie() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 2 }}>
             {GALLERY.map((r, i) => (
               <Reveal key={i} delay={i * 0.05}>
-                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, aspectRatio: "16/10", position: "relative", overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s" }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
-                  <Img src={r.src} alt={r.label}/>
+                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, aspectRatio: "16/10", position: "relative", overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                  <img src={r.src} alt={r.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}/>
                   <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "32px 20px 16px", background: "linear-gradient(transparent, rgba(255,255,255,0.95))" }}>
                     <Badge>{r.cat}</Badge>
                     <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 600, color: C.text, marginTop: 6, letterSpacing: "0.04em" }}>{r.label}</div>
@@ -432,8 +381,7 @@ function Kontakt() {
               {[{ icon: "●", label: "ANSPRECHPARTNER", val: "Michael Blaschegg" }, { icon: "✉", label: "E-MAIL", val: "blaschegg@traunseenet.at", href: "mailto:blaschegg@traunseenet.at" }, { icon: "☎", label: "TELEFON", val: "+43 (0) 699 129 613 70", href: "tel:+4369912961370" }, { icon: "◆", label: "UID-NUMMER", val: "ATU37758404" }].map((c, i) => (
                 <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", marginBottom: 28 }}>
                   <div style={{ width: 36, height: 36, background: `${C.accent}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: C.accent, fontSize: 14 }}>{c.icon}</div>
-                  <div><div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", color: C.textMuted, marginBottom: 4 }}>{c.label}</div>
-                  {c.href ? <a href={c.href} style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.accent, textDecoration: "none" }}>{c.val}</a> : <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.text }}>{c.val}</div>}</div>
+                  <div><div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", color: C.textMuted, marginBottom: 4 }}>{c.label}</div>{c.href ? <a href={c.href} style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.accent, textDecoration: "none" }}>{c.val}</a> : <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.text }}>{c.val}</div>}</div>
                 </div>
               ))}
             </div></Reveal>
