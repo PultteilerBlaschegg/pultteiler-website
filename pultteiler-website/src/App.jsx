@@ -77,7 +77,7 @@ function Nav({ page, setPage }) {
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(255,255,255,0.96)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.3s" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button onClick={() => { setPage("home"); setOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, padding: 0 }}>
-            <img src="/images/logo.jpg" alt="Pultteiler" style={{ width: 40, height: 40, objectFit: "contain" }}/>
+            <img src="/images/logo.jpg" alt="Pultteiler" style={{ width: 56, height: 56, objectFit: "contain" }}/>
             <span style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: 26, color: C.text, letterSpacing: "0.05em" }}>PULTTEILER</span>
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -243,7 +243,7 @@ function Footer({ setPage }) {
       <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 48 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-            <img src="/images/logo.jpg" alt="Pultteiler" style={{ width: 32, height: 32, objectFit: "contain" }}/>
+            <img src="/images/logo.jpg" alt="Pultteiler" style={{ width: 44, height: 44, objectFit: "contain" }}/>
             <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: "#EEE", letterSpacing: "0.05em" }}>PULTTEILER</span>
           </div>
           <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: "#888", lineHeight: 1.7 }}>Direkt vom Hersteller. Der bewährte<br/>Sichtschutz für den Bildungssektor<br/>in AT, DE und CH. Seit über 40 Jahren.</p>
