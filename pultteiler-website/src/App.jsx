@@ -37,14 +37,14 @@ function useCart() { return useContext(CartCtx); }
 
 const SETS = [
   { id: "gelb-vs", name: "SET GELB — BIS 5. SCHULJAHR", short: "Gelb bis 5. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×30 cm) und 12 Klammern. Optimiert für Volksschulpulte.", priceAT: 241, priceCH: 238, tag: "VOLKSSCHULE", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
-  { id: "gelb-ms", name: "SET GELB — AB 6. SCHULJAHR", short: "Gelb ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Für Mittelschul- und Gymnasialpulte.", priceAT: 255, priceCH: 252, tag: "MITTELSCHULE+", color: "#C08B2D", img: "/images/klassenzimmer.png" },
+  { id: "gelb-ms", name: "SET GELB — AB 6. SCHULJAHR", short: "Gelb ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Für Mittelschul- und Gymnasialpulte.", priceAT: 255, priceCH: 252, tag: "MITTELSCHULE+", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
   { id: "grau-ms", name: "SET GRAU — AB 6. SCHULJAHR", short: "Grau ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Dezente graue Variante.", priceAT: 255, priceCH: 252, tag: "HÖHERE SCHULEN", color: "#777", img: "/images/koffer-grau.jpg" },
 ];
 
 const PARTS = [
   { id: "klammer-2", name: "KLAMMER (2 STÜCK)", short: "2x Klammer", desc: "Hochwertige, dauerelastische Klammer im Doppelpack.", priceAT: 19.40, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
   { id: "platte-a", name: "TEILERPLATTE GELB — 50×30 CM", short: "Platte gelb klein", desc: "Einzelne Ersatzplatte, bis 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 8.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
-  { id: "platte-b-gelb", name: "TEILERPLATTE GELB — 50×40 CM", short: "Platte gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/klassenzimmer.png" },
+  { id: "platte-b-gelb", name: "TEILERPLATTE GELB — 50×40 CM", short: "Platte gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/nahaufnahme.jpeg" },
   { id: "platte-b-grau", name: "TEILERPLATTE GRAU — 50×40 CM", short: "Platte grau groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#777", img: "/images/koffer-grau.jpg" },
   { id: "koffer-leer", name: "KOFFER OHNE INHALT", short: "Holzkoffer leer", desc: "Leerer Holzkoffer als Ersatz. Material: Holz.", priceAT: 43.20, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
 ];
