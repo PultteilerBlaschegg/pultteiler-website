@@ -7,24 +7,6 @@ const C = {
   dark: "#1A1A1A",
 };
 
-/* ─── EmailJS Konfiguration ───
-   1. Konto erstellen auf https://www.emailjs.com (kostenlos bis 200 Mails/Monat)
-   2. E-Mail-Service verbinden (Gmail, Outlook, etc.) → Service-ID kopieren
-   3. Template "Shop-Benachrichtigung" erstellen (Mail an euch) → Template-ID kopieren
-      Verfügbare Variablen: {{bestellung}}, {{name}}, {{ansprechperson}}, {{adresse}},
-      {{plz}}, {{ort}}, {{land}}, {{email}}, {{telefon}}, {{uid}}, {{einkäufergruppe}}, {{anmerkungen}}
-   4. Template "Bestellbestätigung" erstellen (Mail an den Käufer) → Template-ID kopieren
-      Gleiche Variablen wie oben
-   5. Public Key kopieren (Account → API Keys)
-   6. Unten einsetzen:
-*/
-const EMAILJS = {
-  PUBLIC_KEY:     "HIER_PUBLIC_KEY",
-  SERVICE_ID:     "HIER_SERVICE_ID",
-  TEMPLATE_SHOP:  "HIER_TEMPLATE_ID_SHOP",
-  TEMPLATE_KUNDE: "HIER_TEMPLATE_ID_KUNDE",
-};
-
 const CartCtx = createContext();
 function CartProvider({ children }) {
   const [items, setItems] = useState([]);
@@ -42,7 +24,7 @@ function CartProvider({ children }) {
   const getPrice = (product) => region === "CH" ? (product.priceCH ?? product.priceAT) : product.priceAT;
   const total = items.reduce((s, i) => s + getPrice(i) * i.qty, 0);
   const count = items.reduce((s, i) => s + i.qty, 0);
-  const shipping = region === "CH" ? 0 : (total >= 238 ? 0 : 8.70);
+  const shipping = region === "CH" ? 0 : 8.70;
   return <CartCtx.Provider value={{ items, add, remove, updateQty, clear, total, count, region, setRegion, getPrice, shipping }}>{children}</CartCtx.Provider>;
 }
 function useCart() { return useContext(CartCtx); }
@@ -140,44 +122,45 @@ function CartSidebar({ onClose }) {
     setStep("kontrolle");
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setSending(true);
-    const params = {
-      bestellung: orderSummary,
-      name: formValues["Name / Schule"] || "",
-      ansprechperson: formValues["Ansprechperson"] || "",
-      adresse: formValues["Adresse"] || "",
-      plz: formValues["PLZ"] || "",
-      ort: formValues["Ort"] || "",
-      land: formValues["Land"] || "",
-      email: formValues["email"] || "",
-      telefon: formValues["Telefon"] || "",
-      uid: formValues["UID-Nummer"] || "",
-      einkäufergruppe: formValues["Einkäufergruppe"] || "",
-      anmerkungen: formValues["Anmerkungen"] || "",
+    const iframeName = "formsubmit_iframe";
+    let iframe = document.getElementById(iframeName);
+    if (!iframe) {
+      iframe = document.createElement("iframe");
+      iframe.id = iframeName;
+      iframe.name = iframeName;
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+    }
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://formsubmit.co/blaschegg@traunseenet.at";
+    form.target = iframeName;
+    form.style.display = "none";
+    const fields = {
+      "_subject": "Neue Bestellung über pultteiler.eu",
+      "_template": "table",
+      "_captcha": "false",
+      "_cc": "inessteiner@liwest.at",
+      "_next": "https://pultteiler.eu",
+      "Bestellung": orderSummary,
     };
-    const sendMail = (templateId) =>
-      fetch("https://api.emailjs.com/api/v1.0/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          service_id: EMAILJS.SERVICE_ID,
-          template_id: templateId,
-          user_id: EMAILJS.PUBLIC_KEY,
-          template_params: params,
-        }),
-      });
-    try {
-      await Promise.all([
-        sendMail(EMAILJS.TEMPLATE_SHOP),
-        sendMail(EMAILJS.TEMPLATE_KUNDE),
-      ]);
+    Object.entries(formValues).forEach(([k, v]) => { if (k !== "Bestellung") fields[k] = v; });
+    Object.entries(fields).forEach(([k, v]) => {
+      const input = document.createElement("input");
+      input.type = "hidden"; input.name = k; input.value = v;
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    iframe.onload = () => {
       setStep("confirmed");
       clear();
-    } catch (err) {
-      alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
-    }
-    setSending(false);
+      setSending(false);
+      form.remove();
+    };
+    setTimeout(() => { if (sending) { setStep("confirmed"); clear(); setSending(false); form.remove(); } }, 5000);
+    form.submit();
   };
 
   return (
@@ -223,8 +206,7 @@ function CartSidebar({ onClose }) {
           {items.length > 0 && (
             <div style={{ borderTop: `1px solid ${C.border}`, padding: "24px 28px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Zwischensumme</span><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.text }}>€ {total.toFixed(2)}</span></div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Versand ({region === "CH" ? "CH" : "AT/DE"})</span><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.green }}>{region === "CH" ? "Inkl. Lieferung" : (shipping === 0 ? "Kostenlos" : `€ ${shipping.toFixed(2)}`)}</span></div>
-              {region !== "CH" && shipping > 0 && <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.accent, margin: "4px 0 12px" }}>Noch € {(238 - total).toFixed(2)} bis zum kostenlosen Versand</p>}
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted }}>Versand ({region === "CH" ? "CH" : "AT/DE"})</span><span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.green }}>{region === "CH" ? "Inkl. Lieferung" : `€ ${shipping.toFixed(2)}`}</span></div>
               <div style={{ display: "flex", justifyContent: "space-between", borderTop: `1px solid ${C.border}`, paddingTop: 16, marginTop: 8, marginBottom: 20 }}><span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.text }}>GESAMT</span><span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.accent }}>€ {(total + shipping).toFixed(2)}</span></div>
               <button onClick={() => setStep("checkout")} style={{ width: "100%", background: C.dark, color: C.white, border: "none", padding: "16px", fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", cursor: "pointer" }}>JETZT BESTELLEN →</button>
               <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.textMuted, textAlign: "center", marginTop: 12 }}>{region === "CH" ? "Steuerfrei, unverzollt, inkl. Lieferung." : "Alle Preise inkl. MwSt. Zahlung per Rechnung."}</p>
@@ -410,7 +392,7 @@ function Home({ go }) {
       </section>
       <section style={{ background: C.bgCard, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, padding: "48px 32px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 32 }}>
-          {[{ val: "999+", label: "SCHULEN BELIEFERT" }, { val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "3", label: "LÄNDER: AT · DE · CH" }, { val: "0 €", label: "VERSAND AB 238 €" }].map((m, i) => (
+          {[{ val: "999+", label: "SCHULEN BELIEFERT" }, { val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "3", label: "LÄNDER: AT · DE · CH" }, { val: "✓", label: "DIREKT VOM HERSTELLER" }].map((m, i) => (
             <Reveal key={i} delay={i * 0.08}><div style={{ textAlign: "center", padding: "12px 0" }}><div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.accent, lineHeight: 1 }}>{m.val}</div><div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", color: C.textMuted, marginTop: 8 }}>{m.label}</div></div></Reveal>
           ))}
         </div>
@@ -421,10 +403,10 @@ function Home({ go }) {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 2 }}>
             {[
               { num: "01", title: "FAIRE PRÜFUNGSBEDINGUNGEN", text: "Kein Abschreiben, keine Gruppenaufteilung. Alle Schüler schreiben gleichzeitig unter identischen Bedingungen." },
-              { num: "02", title: "STECKSYSTEM — KEIN WERKZEUG", text: "Die dauerelastische Klammer fixiert die Trennplatte in Sekunden. Aufbau und Abbau in unter einer Minute." },
+              { num: "02", title: "STECKSYSTEM — KEIN WERKZEUG", text: "Die dauerelastische Klammer fixiert die Trennplatte schnell und einfach. Aufbau und Abbau gehen mühelos von der Hand." },
               { num: "03", title: "ROBUST & LANGLEBIG", text: "Hochwertige Materialien für jahrelangen Dauereinsatz im Schulalltag. Ersatzteile einzeln nachbestellbar." },
-              { num: "04", title: "KOMPAKTER HOLZKOFFER", text: "12 komplette Pultteilsysteme pro Koffer. Leicht zu transportieren, stapelbar, platzsparend im Materialraum." },
-              { num: "05", title: "KOSTENLOSER VERSAND AB 238 €", text: "Frei Haus in Österreich und Deutschland ab einem Koffer. Steuerfreie Lieferung nach DE mit UID-Nummer." },
+              { num: "04", title: "KOMPAKTER HOLZKOFFER", text: "12 komplette Pultteilsysteme pro Koffer. Leicht zu transportieren, stapelbar, platzsparend im Materialraum. Auf Anfrage sind auch Koffer mit mehr als 12 Teilern möglich." },
+              { num: "05", title: "VERSAND IN AT, DE & CH", text: "Lieferung direkt vom Hersteller in ganz Österreich, Deutschland und der Schweiz. Steuerfreie Lieferung nach DE mit UID-Nummer. Steuerfreie, unverzollte Lieferung in die Schweiz." },
               { num: "06", title: "E-RECHNUNG FÜR BUNDESSCHULEN", text: "Österreichische Bundesschulen erhalten E-Rechnungen. Einkäufergruppe im Bestellvorgang hinterlegbar." },
             ].map((u, i) => (
               <Reveal key={i} delay={i * 0.06}><div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "36px 32px", transition: "all 0.3s", cursor: "default", height: "100%" }} onMouseEnter={e => { e.currentTarget.style.borderColor = C.accent; e.currentTarget.style.background = C.bgElevated; }} onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}>
@@ -507,7 +489,7 @@ function Produkte() {
                 {region === "CH" ? (
                   <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>Schweiz: <span style={{ color: C.green, fontWeight: 600 }}>Lieferung inklusive</span>. Unverzollte Lieferung, steuerfrei. Zahlung per Rechnung. Ersatzteile auf Anfrage.</p>
                 ) : (
-                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>AT & DE: € 8,70 — <span style={{ color: C.green, fontWeight: 600 }}>kostenlos ab € 238</span>. Zahlung per Rechnung. Steuerfreie Lieferung nach DE mit UID. E-Rechnungen für österr. Bundesschulen.</p>
+                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>AT & DE: Versand € 8,70. Zahlung per Rechnung. Steuerfreie Lieferung nach DE mit UID. E-Rechnungen für österr. Bundesschulen.</p>
                 )}
               </div>
             </div>
@@ -705,4 +687,3 @@ export default function App() {
     </CartProvider>
   );
 }
-
