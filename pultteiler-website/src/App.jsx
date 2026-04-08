@@ -122,28 +122,49 @@ function CartSidebar({ onClose }) {
     setStep("kontrolle");
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setSending(true);
-    const fd = new FormData();
-    fd.append("_subject", "Neue Bestellung über pultteiler.eu");
-    fd.append("_template", "table");
-    fd.append("_captcha", "false");
-    fd.append("_cc", "inessteiner@liwest.at");
-    fd.append("_autoresponse", "Vielen Dank für Ihre Bestellung bei Pultteiler! Wir haben Ihre Bestellung erhalten und melden uns in Kürze mit einer Bestätigung. Bei Fragen erreichen Sie uns unter blaschegg@traunseenet.at oder +43 (0) 699 129 613 70. Mit freundlichen Grüßen, Schulmittel Blaschegg");
-    fd.append("Bestellung", orderSummary);
-    Object.entries(formValues).forEach(([k, v]) => fd.append(k, v));
-    try {
-      await fetch("https://formsubmit.co/ajax/blaschegg@traunseenet.at", {
-        method: "POST",
-        headers: { "Accept": "application/json" },
-        body: fd,
-      });
+    const iframeName = "formsubmit_iframe";
+    let iframe = document.getElementById(iframeName);
+    if (!iframe) {
+      iframe = document.createElement("iframe");
+      iframe.id = iframeName;
+      iframe.name = iframeName;
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+    }
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://formsubmit.co/blaschegg@traunseenet.at";
+    form.target = iframeName;
+    form.style.display = "none";
+    const adressBlock = [formValues["Name / Schule"], formValues["Ansprechperson"], formValues["Adresse"], `${formValues["PLZ"] || ""} ${formValues["Ort"] || ""}`.trim(), formValues["Land"]].filter(Boolean).join("\n");
+    const autoresponseText = `Vielen Dank für Ihre Bestellung bei Pultteiler!\n\nIhre Bestellung im Überblick:\n${orderLines}\n\nZwischensumme: € ${total.toFixed(2)}\nVersand: ${shipping === 0 ? "Kostenlos / inkl." : "€ " + shipping.toFixed(2)}\nGesamtsumme: € ${(total + shipping).toFixed(2)}\n\nRechnungsadresse:\n${adressBlock}${formValues["UID-Nummer"] ? "\nUID: " + formValues["UID-Nummer"] : ""}${formValues["Anmerkungen"] ? "\nAnmerkungen: " + formValues["Anmerkungen"] : ""}\n\nWir melden uns in Kürze mit einer Bestätigung. Zahlung per Rechnung.\n\nBei Fragen erreichen Sie uns unter:\nblaschegg@traunseenet.at\n+43 (0) 699 129 613 70\n\nMit freundlichen Grüßen,\nSchulmittel Blaschegg\nStücklbachstraße 13, 4813 Altmünster`;
+    const fields = {
+      "_subject": "Neue Bestellung über pultteiler.eu",
+      "_template": "table",
+      "_captcha": "false",
+      "_cc": "inessteiner@liwest.at",
+      "_replyto": formValues["email"] || "",
+      "_autoresponse": autoresponseText,
+      "_next": "https://pultteiler.eu",
+      "Bestellung": orderSummary,
+    };
+    Object.entries(formValues).forEach(([k, v]) => { if (k !== "Bestellung") fields[k] = v; });
+    Object.entries(fields).forEach(([k, v]) => {
+      const input = document.createElement("input");
+      input.type = "hidden"; input.name = k; input.value = v;
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    iframe.onload = () => {
       setStep("confirmed");
       clear();
-    } catch (err) {
-      alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
-    }
-    setSending(false);
+      setSending(false);
+      form.remove();
+    };
+    setTimeout(() => { if (sending) { setStep("confirmed"); clear(); setSending(false); form.remove(); } }, 5000);
+    form.submit();
   };
 
   return (
