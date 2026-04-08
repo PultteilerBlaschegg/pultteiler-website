@@ -7,6 +7,24 @@ const C = {
   dark: "#1A1A1A",
 };
 
+/* ─── EmailJS Konfiguration ───
+   1. Konto erstellen auf https://www.emailjs.com (kostenlos bis 200 Mails/Monat)
+   2. E-Mail-Service verbinden (Gmail, Outlook, etc.) → Service-ID kopieren
+   3. Template "Shop-Benachrichtigung" erstellen (Mail an euch) → Template-ID kopieren
+      Verfügbare Variablen: {{bestellung}}, {{name}}, {{ansprechperson}}, {{adresse}},
+      {{plz}}, {{ort}}, {{land}}, {{email}}, {{telefon}}, {{uid}}, {{einkäufergruppe}}, {{anmerkungen}}
+   4. Template "Bestellbestätigung" erstellen (Mail an den Käufer) → Template-ID kopieren
+      Gleiche Variablen wie oben
+   5. Public Key kopieren (Account → API Keys)
+   6. Unten einsetzen:
+*/
+const EMAILJS = {
+  PUBLIC_KEY:     "HIER_PUBLIC_KEY",
+  SERVICE_ID:     "HIER_SERVICE_ID",
+  TEMPLATE_SHOP:  "HIER_TEMPLATE_ID_SHOP",
+  TEMPLATE_KUNDE: "HIER_TEMPLATE_ID_KUNDE",
+};
+
 const CartCtx = createContext();
 function CartProvider({ children }) {
   const [items, setItems] = useState([]);
@@ -122,49 +140,44 @@ function CartSidebar({ onClose }) {
     setStep("kontrolle");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSending(true);
-    const iframeName = "formsubmit_iframe";
-    let iframe = document.getElementById(iframeName);
-    if (!iframe) {
-      iframe = document.createElement("iframe");
-      iframe.id = iframeName;
-      iframe.name = iframeName;
-      iframe.style.display = "none";
-      document.body.appendChild(iframe);
-    }
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "https://formsubmit.co/blaschegg@traunseenet.at";
-    form.target = iframeName;
-    form.style.display = "none";
-    const adressBlock = [formValues["Name / Schule"], formValues["Ansprechperson"], formValues["Adresse"], `${formValues["PLZ"] || ""} ${formValues["Ort"] || ""}`.trim(), formValues["Land"]].filter(Boolean).join("\n");
-    const autoresponseText = `Vielen Dank für Ihre Bestellung bei Pultteiler!\n\nIhre Bestellung im Überblick:\n${orderLines}\n\nZwischensumme: € ${total.toFixed(2)}\nVersand: ${shipping === 0 ? "Kostenlos / inkl." : "€ " + shipping.toFixed(2)}\nGesamtsumme: € ${(total + shipping).toFixed(2)}\n\nRechnungsadresse:\n${adressBlock}${formValues["UID-Nummer"] ? "\nUID: " + formValues["UID-Nummer"] : ""}${formValues["Anmerkungen"] ? "\nAnmerkungen: " + formValues["Anmerkungen"] : ""}\n\nWir melden uns in Kürze mit einer Bestätigung. Zahlung per Rechnung.\n\nBei Fragen erreichen Sie uns unter:\nblaschegg@traunseenet.at\n+43 (0) 699 129 613 70\n\nMit freundlichen Grüßen,\nSchulmittel Blaschegg\nStücklbachstraße 13, 4813 Altmünster`;
-    const fields = {
-      "_subject": "Neue Bestellung über pultteiler.eu",
-      "_template": "table",
-      "_captcha": "false",
-      "_cc": "inessteiner@liwest.at",
-      "_replyto": formValues["email"] || "",
-      "_autoresponse": autoresponseText,
-      "_next": "https://pultteiler.eu",
-      "Bestellung": orderSummary,
+    const params = {
+      bestellung: orderSummary,
+      name: formValues["Name / Schule"] || "",
+      ansprechperson: formValues["Ansprechperson"] || "",
+      adresse: formValues["Adresse"] || "",
+      plz: formValues["PLZ"] || "",
+      ort: formValues["Ort"] || "",
+      land: formValues["Land"] || "",
+      email: formValues["email"] || "",
+      telefon: formValues["Telefon"] || "",
+      uid: formValues["UID-Nummer"] || "",
+      einkäufergruppe: formValues["Einkäufergruppe"] || "",
+      anmerkungen: formValues["Anmerkungen"] || "",
     };
-    Object.entries(formValues).forEach(([k, v]) => { if (k !== "Bestellung") fields[k] = v; });
-    Object.entries(fields).forEach(([k, v]) => {
-      const input = document.createElement("input");
-      input.type = "hidden"; input.name = k; input.value = v;
-      form.appendChild(input);
-    });
-    document.body.appendChild(form);
-    iframe.onload = () => {
+    const sendMail = (templateId) =>
+      fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id: EMAILJS.SERVICE_ID,
+          template_id: templateId,
+          user_id: EMAILJS.PUBLIC_KEY,
+          template_params: params,
+        }),
+      });
+    try {
+      await Promise.all([
+        sendMail(EMAILJS.TEMPLATE_SHOP),
+        sendMail(EMAILJS.TEMPLATE_KUNDE),
+      ]);
       setStep("confirmed");
       clear();
-      setSending(false);
-      form.remove();
-    };
-    setTimeout(() => { if (sending) { setStep("confirmed"); clear(); setSending(false); form.remove(); } }, 5000);
-    form.submit();
+    } catch (err) {
+      alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
+    }
+    setSending(false);
   };
 
   return (
@@ -237,7 +250,6 @@ function CartSidebar({ onClose }) {
             </div>
             <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 12 }}>RECHNUNGSADRESSE</div>
             <form onSubmit={goToKontrolle}>
-              <input type="hidden" name="Bestellung" value={orderSummary}/>
               <input type="text" name="Name / Schule" placeholder="Name oder Schulname *" required style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <input type="text" name="Ansprechperson" placeholder="Ansprechperson" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <input type="text" name="Adresse" placeholder="Straße und Hausnummer *" required style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
@@ -693,3 +705,4 @@ export default function App() {
     </CartProvider>
   );
 }
+
