@@ -167,19 +167,32 @@ function CartSidebar({ onClose }) {
     setStep("kontrolle");
   };
 
+  const loadEmailJS = () => {
+    if (window.emailjs) return Promise.resolve();
+    return new Promise((resolve) => {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+      s.onload = () => { window.emailjs.init("xV1NC72BHupwuOiKH"); resolve(); };
+      document.head.appendChild(s);
+    });
+  };
+
   const handleSubmit = async () => {
     setSending(true);
     setError("");
 
     const orderNr = generateOrderNr();
     const mailBody = buildMailBody(orderNr);
+    const shippingText = shipping === 0 ? "Kostenlos / inkl." : `€ ${shipping.toFixed(2)}`;
+    const bestellungText = items.map(i => `${i.qty}x ${i.name} — € ${(getPrice(i) * i.qty).toFixed(2)}`).join("\n");
 
+    // 1) Interne Mail an Blaschegg + Steiner (FormSubmit)
     const payload = {
       ...mailBody,
       _subject: `Neue Bestellung Nr. ${orderNr} — pultteiler.eu`,
       _template: "table",
       _captcha: "false",
-      _cc: `inessteiner@liwest.at,${formValues["email"] || ""}`,
+      _cc: "inessteiner@liwest.at",
       _replyto: formValues["email"] || "",
     };
 
@@ -196,6 +209,22 @@ function CartSidebar({ onClose }) {
       const data = await res.json();
 
       if (res.ok && data.success) {
+        // 2) Bestätigungsmail an Kunden (EmailJS)
+        try {
+          await loadEmailJS();
+          await window.emailjs.send("service_cobcbsg", "template_ko0cjvs", {
+            kunde_email: formValues["email"],
+            order_nr: orderNr,
+            region: region === "CH" ? "Schweiz" : "Österreich / Deutschland",
+            bestellung: bestellungText,
+            versand: shippingText,
+            gesamt: `€ ${(total + shipping).toFixed(2)}`,
+          });
+        } catch (e) {
+          // Kundenmail fehlgeschlagen — Bestellung ist trotzdem eingegangen
+          console.warn("Kunden-E-Mail konnte nicht gesendet werden:", e);
+        }
+
         setStep("confirmed");
         clear();
       } else {
