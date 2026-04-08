@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, createContext, useContext } from "react";
 
 const C = {
   bg: "#FFFFFF", bgCard: "#F7F6F3", bgElevated: "#EFEEE9", surface: "#E8E6E1",
-  text: "#1A1A1A", textMuted: "#71706B", accent: "#C08B2D", accentHover: "#D49A33",
+  text: "#1A1A1A", textMuted: "#71706B", accent: "#2D7D46", accentHover: "#359555",
   white: "#FFF", border: "#E2E0DB", borderLight: "#D5D3CE", green: "#3D8A56", red: "#C44D3F",
   dark: "#1A1A1A",
 };
@@ -493,7 +493,7 @@ function Anleitung({ go }) {
               <Reveal key={i} delay={i * 0.1}>
                 <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: i % 2 === 0 ? "1fr 1.2fr" : "1.2fr 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card" onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
                   {i % 2 === 1 && <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}40`, lineHeight: 1 }}>SCHRITT {s.num}</span>
+                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}`, lineHeight: 1 }}>SCHRITT {s.num}</span>
                     <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>{s.title}</h2>
                     <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>{s.text}</p>
                   </div>}
@@ -501,7 +501,7 @@ function Anleitung({ go }) {
                     <img src={s.img} alt={s.alt} style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: 240, display: "block" }}/>
                   </div>
                   {i % 2 === 0 && <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}40`, lineHeight: 1 }}>SCHRITT {s.num}</span>
+                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}`, lineHeight: 1 }}>SCHRITT {s.num}</span>
                     <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>{s.title}</h2>
                     <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>{s.text}</p>
                   </div>}
