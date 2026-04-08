@@ -106,20 +106,37 @@ function CartSidebar({ onClose }) {
   const { items, updateQty, remove, total, count, region, getPrice, shipping, clear } = useCart();
   const [step, setStep] = useState("cart");
   const [sending, setSending] = useState(false);
+  const [formValues, setFormValues] = useState({});
+  const formRef = useRef(null);
   const inp = { width: "100%", padding: "12px 14px", background: C.bgCard, border: `1px solid ${C.border}`, fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.text, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s", marginBottom: 12 };
   const regionLabel = region === "CH" ? "Schweiz (steuerfrei, inkl. Lieferung)" : "Österreich/Deutschland (inkl. MwSt)";
   const orderLines = items.map(i => `${i.qty}x ${i.short} — € ${(getPrice(i) * i.qty).toFixed(2)}`).join("\n");
   const orderSummary = `Region: ${regionLabel}\n\n${orderLines}\n\nZwischensumme: € ${total.toFixed(2)}\nVersand: ${shipping === 0 ? "Kostenlos / inkl." : "€ " + shipping.toFixed(2)}\nGesamtsumme: € ${(total + shipping).toFixed(2)}`;
 
-  const handleSubmit = async (e) => {
+  const goToKontrolle = (e) => {
     e.preventDefault();
+    const fd = new FormData(e.target);
+    const vals = {};
+    fd.forEach((v, k) => { if (!k.startsWith("_")) vals[k] = v; });
+    setFormValues(vals);
+    setStep("kontrolle");
+  };
+
+  const handleSubmit = async () => {
     setSending(true);
-    const formData = new FormData(e.target);
+    const fd = new FormData();
+    fd.append("_subject", "Neue Bestellung über pultteiler.eu");
+    fd.append("_template", "table");
+    fd.append("_captcha", "false");
+    fd.append("_cc", "inessteiner@liwest.at");
+    fd.append("_autoresponse", "Vielen Dank für Ihre Bestellung bei Pultteiler! Wir haben Ihre Bestellung erhalten und melden uns in Kürze mit einer Bestätigung. Bei Fragen erreichen Sie uns unter blaschegg@traunseenet.at oder +43 (0) 699 129 613 70. Mit freundlichen Grüßen, Schulmittel Blaschegg");
+    fd.append("Bestellung", orderSummary);
+    Object.entries(formValues).forEach(([k, v]) => fd.append(k, v));
     try {
       await fetch("https://formsubmit.co/ajax/blaschegg@traunseenet.at", {
         method: "POST",
         headers: { "Accept": "application/json" },
-        body: formData,
+        body: fd,
       });
       setStep("confirmed");
       clear();
@@ -137,6 +154,7 @@ function CartSidebar({ onClose }) {
           <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: 0 }}>
             {step === "cart" && <>WARENKORB <span style={{ color: C.textMuted, fontSize: 20 }}>({count})</span></>}
             {step === "checkout" && "BESTELLUNG"}
+            {step === "kontrolle" && "KONTROLLE"}
             {step === "confirmed" && "BESTÄTIGUNG"}
           </h3>
           <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: C.textMuted, fontSize: 24, padding: 4 }}>✕</button>
@@ -197,12 +215,7 @@ function CartSidebar({ onClose }) {
               </div>
             </div>
             <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 12 }}>RECHNUNGSADRESSE</div>
-            <form onSubmit={handleSubmit}>
-              <input type="hidden" name="_subject" value="Neue Bestellung über pultteiler.eu"/>
-              <input type="hidden" name="_template" value="table"/>
-              <input type="hidden" name="_captcha" value="false"/>
-              <input type="hidden" name="_cc" value="inessteiner@liwest.at"/>
-              <input type="hidden" name="_autoresponse" value="Vielen Dank für Ihre Bestellung bei Pultteiler! Wir haben Ihre Bestellung erhalten und melden uns in Kürze mit einer Bestätigung. Bei Fragen erreichen Sie uns unter blaschegg@traunseenet.at oder +43 (0) 699 129 613 70. Mit freundlichen Grüßen, Schulmittel Blaschegg"/>
+            <form onSubmit={goToKontrolle}>
               <input type="hidden" name="Bestellung" value={orderSummary}/>
               <input type="text" name="Name / Schule" placeholder="Name oder Schulname *" required style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <input type="text" name="Ansprechperson" placeholder="Ansprechperson" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
@@ -217,11 +230,62 @@ function CartSidebar({ onClose }) {
               <input type="text" name="UID-Nummer" placeholder="UID-Nummer (optional, für steuerfreie Lieferung nach DE)" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <input type="text" name="Einkäufergruppe" placeholder="Einkäufergruppe (optional, für österr. Bundesschulen)" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <textarea name="Anmerkungen" placeholder="Anmerkungen zur Bestellung (optional)" rows={3} style={{ ...inp, resize: "vertical" }} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
-              <button type="submit" disabled={sending} style={{ width: "100%", background: sending ? C.textMuted : C.dark, color: C.white, border: "none", padding: "16px", fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", cursor: sending ? "wait" : "pointer", marginTop: 8 }}>
-                {sending ? "WIRD GESENDET..." : "BESTELLUNG ABSENDEN →"}
+              <button type="submit" style={{ width: "100%", background: C.dark, color: C.white, border: "none", padding: "16px", fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", cursor: "pointer", marginTop: 8 }}>
+                WEITER ZUR KONTROLLE →
               </button>
               <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.textMuted, textAlign: "center", marginTop: 12 }}>Zahlung per Rechnung. Sie erhalten die Rechnung mit der Lieferung oder per E-Mail.</p>
             </form>
+          </div>
+        )}
+
+        {step === "kontrolle" && (
+          <div style={{ flex: 1, overflow: "auto", padding: "24px 28px" }}>
+            <button onClick={() => setStep("checkout")} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", padding: 0, marginBottom: 20 }}>← ZURÜCK ZUR EINGABE</button>
+            <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "16px 20px", marginBottom: 16 }}>
+              <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 10 }}>IHRE BESTELLUNG</div>
+              {items.map(item => (
+                <div key={item.id} style={{ display: "flex", justifyContent: "space-between", marginBottom: 4, fontFamily: "'Inter Tight', sans-serif", fontSize: 13 }}>
+                  <span style={{ color: C.text }}>{item.qty}x {item.short}</span>
+                  <span style={{ color: C.textMuted }}>€ {(getPrice(item) * item.qty).toFixed(2)}</span>
+                </div>
+              ))}
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4, fontFamily: "'Inter Tight', sans-serif", fontSize: 13 }}>
+                <span style={{ color: C.textMuted }}>Versand</span>
+                <span style={{ color: C.green }}>{shipping === 0 ? "Kostenlos / inkl." : `€ ${shipping.toFixed(2)}`}</span>
+              </div>
+              <div style={{ borderTop: `1px solid ${C.border}`, marginTop: 10, paddingTop: 10, display: "flex", justifyContent: "space-between" }}>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, color: C.text }}>GESAMT</span>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, color: C.accent }}>€ {(total + shipping).toFixed(2)}</span>
+              </div>
+            </div>
+            <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "16px 20px", marginBottom: 24 }}>
+              <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 10 }}>RECHNUNGSADRESSE</div>
+              {[
+                { label: "Name / Schule", key: "Name / Schule" },
+                { label: "Ansprechperson", key: "Ansprechperson" },
+                { label: "Adresse", key: "Adresse" },
+                { label: "PLZ / Ort", key: "_plzort" },
+                { label: "Land", key: "Land" },
+                { label: "E-Mail", key: "email" },
+                { label: "Telefon", key: "Telefon" },
+                { label: "UID-Nummer", key: "UID-Nummer" },
+                { label: "Einkäufergruppe", key: "Einkäufergruppe" },
+                { label: "Anmerkungen", key: "Anmerkungen" },
+              ].map(f => {
+                const val = f.key === "_plzort" ? `${formValues["PLZ"] || ""} ${formValues["Ort"] || ""}`.trim() : formValues[f.key];
+                if (!val) return null;
+                return (
+                  <div key={f.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontFamily: "'Inter Tight', sans-serif", fontSize: 13, gap: 12 }}>
+                    <span style={{ color: C.textMuted, flexShrink: 0 }}>{f.label}</span>
+                    <span style={{ color: C.text, textAlign: "right" }}>{val}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <button onClick={handleSubmit} disabled={sending} style={{ width: "100%", background: sending ? C.textMuted : C.dark, color: C.white, border: "none", padding: "16px", fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", cursor: sending ? "wait" : "pointer" }}>
+              {sending ? "WIRD GESENDET..." : "BESTELLUNG ABSENDEN →"}
+            </button>
+            <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.textMuted, textAlign: "center", marginTop: 12 }}>Zahlung per Rechnung. Sie erhalten die Rechnung mit der Lieferung oder per E-Mail.</p>
           </div>
         )}
 
