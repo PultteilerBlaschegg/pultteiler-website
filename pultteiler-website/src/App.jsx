@@ -306,7 +306,7 @@ function Home({ go }) {
               <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der bewährte Sichtschutz für Schultische bei schriftlichen Prüfungen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem, robuste Verarbeitung, sofort einsatzbereit — so schnell aufgebaut, wie das Hefte austeilen.</p></Reveal>
               <Reveal delay={0.3}><div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div></Reveal>
             </div>
-            <Reveal delay={0.2}><div style={{ border: `1px solid ${C.border}`, overflow: "hidden", aspectRatio: "4/3", background: C.bgCard, display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "contain" }}/></div></Reveal>
+            <Reveal delay={0.2}><div style={{ overflow: "hidden", aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "contain" }}/></div></Reveal>
           </div>
         </div>
       </section>
