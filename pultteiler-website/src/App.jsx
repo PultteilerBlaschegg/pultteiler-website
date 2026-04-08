@@ -32,7 +32,7 @@ function useCart() { return useContext(CartCtx); }
 /*
   BILDER — genau diese 7 Dateien müssen in /public/images/ liegen:
   klassenzimmer.png, koffer-gelb.jpg, koffer-grau.jpg,
-  nahaufnahme.jpeg, Platte.png, PlatteAgelb.png, PlatteBgrau.png, pultteiler-2.jpg, pultteiler-einsatz.jpg, pultteiler-uni.png
+  nahaufnahme.jpeg, pultteiler-2.jpg, pultteiler-einsatz.jpg, pultteiler-uni.png
 */
 
 const SETS = [
@@ -42,11 +42,11 @@ const SETS = [
 ];
 
 const PARTS = [
-  { id: "klammer-2", name: "KLAMMER (2 STÜCK)", short: "2x Klammer", desc: "Hochwertige, dauerelastische Klammer im Doppelpack.", priceAT: 19.40, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/Klammer.gif" },
-  { id: "platte-a", name: "TEILERPLATTE A GELB — 50×30 CM", short: "Platte A gelb klein", desc: "Einzelne Ersatzplatte, bis 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 8.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/PlatteAgelb.png" },
-  { id: "platte-b-gelb", name: "TEILERPLATTE B GELB — 50×40 CM", short: "Platte B gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/Platte.png" },
-  { id: "platte-b-grau", name: "TEILERPLATTE B GRAU — 50×40 CM", short: "Platte B grau groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#777", img: "/images/PlatteBgrau.png" },
-  { id: "koffer-leer", name: "KOFFER OHNE INHALT", short: "Holzkoffer leer", desc: "Leerer Holzkoffer als Ersatz. Material: Holz.", priceAT: 43.20, tag: "ERSATZTEIL", color: "#C08B2D", img: "" },
+  { id: "klammer-2", name: "KLAMMER (2 STÜCK)", short: "2x Klammer", desc: "Hochwertige, dauerelastische Klammer im Doppelpack.", priceAT: 19.40, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
+  { id: "platte-a", name: "TEILERPLATTE GELB — 50×30 CM", short: "Platte gelb klein", desc: "Einzelne Ersatzplatte, bis 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 8.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
+  { id: "platte-b-gelb", name: "TEILERPLATTE GELB — 50×40 CM", short: "Platte gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/nahaufnahme.jpeg" },
+  { id: "platte-b-grau", name: "TEILERPLATTE GRAU — 50×40 CM", short: "Platte grau groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#777", img: "/images/koffer-grau.jpg" },
+  { id: "koffer-leer", name: "KOFFER OHNE INHALT", short: "Holzkoffer leer", desc: "Leerer Holzkoffer als Ersatz. Material: Holz.", priceAT: 43.20, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
 ];
 
 const GALLERY = [
@@ -201,6 +201,7 @@ function CartSidebar({ onClose }) {
               <input type="hidden" name="_subject" value="Neue Bestellung über pultteiler.eu"/>
               <input type="hidden" name="_template" value="table"/>
               <input type="hidden" name="_captcha" value="false"/>
+              <input type="hidden" name="_cc" value="inessteiner@liwest.at"/>
               <input type="hidden" name="_autoresponse" value="Vielen Dank für Ihre Bestellung bei Pultteiler! Wir haben Ihre Bestellung erhalten und melden uns in Kürze mit einer Bestätigung. Bei Fragen erreichen Sie uns unter blaschegg@traunseenet.at oder +43 (0) 699 129 613 70. Mit freundlichen Grüßen, Schulmittel Blaschegg"/>
               <input type="hidden" name="Bestellung" value={orderSummary}/>
               <input type="text" name="Name / Schule" placeholder="Name oder Schulname *" required style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
@@ -319,7 +320,7 @@ function Home({ go }) {
       </section>
       <section style={{ padding: "96px 32px", background: C.bg }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <Heading overline="WARUM PULTTEILER" title="SECHS GRÜNDE FÜR DEN PULTTEILER"/>
+          <Heading overline="WARUM PULTTEILER" title="SECHS GRÜNDE FÜR DEN BRANCHENSTANDARD"/>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 2 }}>
             {[
               { num: "01", title: "FAIRE PRÜFUNGSBEDINGUNGEN", text: "Kein Abschreiben, keine Gruppenaufteilung. Alle Schüler schreiben gleichzeitig unter identischen Bedingungen." },
@@ -380,18 +381,13 @@ function Produkte() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 2 }}>
                 {PARTS.map((p, i) => (
                   <Reveal key={p.id} delay={i * 0.08}>
-                    <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: 0, transition: "border-color 0.3s", overflow: "hidden" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
-                      {p.img && <div style={{ background: C.bgElevated, borderBottom: `1px solid ${C.border}`, padding: 16, display: "flex", alignItems: "center", justifyContent: "center", height: 160 }}>
-                        <img src={p.img} alt={p.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" }}/>
-                      </div>}
-                      <div style={{ padding: "20px 24px 28px" }}>
+                    <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "28px 24px", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
                       <Badge>{p.tag}</Badge>
                       <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.text, margin: "10px 0 6px" }}>{p.name}</h4>
                       <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.5, margin: "0 0 20px" }}>{p.desc}</p>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text }}>€ {p.priceAT.toFixed(2)}</span>
                         <AddToCartBtn product={p}/>
-                      </div>
                       </div>
                     </div>
                   </Reveal>
