@@ -52,7 +52,7 @@ const PARTS = [
 const GALLERY = [
   { src: "/images/klassenzimmer.png", label: "KLASSENZIMMER IM EINSATZ", cat: "PRAXIS" },
   { src: "/images/pultteiler-uni.png", label: "UNIVERSITÄT HÖRSAAL", cat: "HOCHSCHULE" },
-  { src: "/images/pultteiler-einsatz.jpg", label: "EDV-RAUM MIT SICHTSCHUTZ", cat: "PRAXIS" },
+  { src: "/images/pultteiler-einsatz.jpg", label: "EDV-RAUM MIT PULTTEILER", cat: "PRAXIS" },
   { src: "/images/koffer-gelb.jpg", label: "HOLZKOFFER SET GELB", cat: "PRODUKT" },
   { src: "/images/koffer-grau.jpg", label: "HOLZKOFFER SET GRAU", cat: "PRODUKT" },
   { src: "/images/pultteiler-2.jpg", label: "PULTTEILER IM GROSSRAUM", cat: "REFERENZ" },
@@ -77,9 +77,7 @@ function Nav({ page, setPage }) {
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(255,255,255,0.96)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.3s" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button onClick={() => { setPage("home"); setOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, padding: 0 }}>
-            <div style={{ width: 40, height: 40, background: C.dark, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="2" width="6.5" height="18" fill="white" opacity="0.95"/><rect x="12.5" y="2" width="6.5" height="18" fill="white" opacity="0.55"/></svg>
-            </div>
+            <img src="/images/logo.jpg" alt="Pultteiler" style={{ width: 56, height: 56, objectFit: "contain" }}/>
             <span style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: 26, color: C.text, letterSpacing: "0.05em" }}>PULTTEILER</span>
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -245,12 +243,10 @@ function Footer({ setPage }) {
       <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 48 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-            <div style={{ width: 32, height: 32, background: C.accent, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="3" y="2" width="6.5" height="18" fill="white" opacity="0.95"/><rect x="12.5" y="2" width="6.5" height="18" fill="white" opacity="0.55"/></svg>
-            </div>
+            <img src="/images/logo.jpg" alt="Pultteiler" style={{ width: 44, height: 44, objectFit: "contain" }}/>
             <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: "#EEE", letterSpacing: "0.05em" }}>PULTTEILER</span>
           </div>
-          <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: "#888", lineHeight: 1.7 }}>Direkt vom Hersteller. Der bewährte<br/>Sichtschutz für den Bildungssektor<br/>in AT, DE und CH. Seit über 40 Jahren.</p>
+          <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: "#888", lineHeight: 1.7 }}>Direkt vom Hersteller. Der bewährte<br/>Pultteiler für Schultische<br/>in AT, DE und CH. Seit über 40 Jahren.</p>
         </div>
         <div>
           <h4 style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: "#666", marginBottom: 20 }}>SEITEN</h4>
@@ -304,8 +300,8 @@ function Home({ go }) {
           <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: 64, alignItems: "center" }} className="hero-g">
             <div>
               <Reveal><Badge>SEIT ÜBER 40 JAHREN — DIREKT VOM HERSTELLER</Badge></Reveal>
-              <Reveal delay={0.1}><h1 style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(48px, 7vw, 96px)", color: C.text, lineHeight: 0.95, margin: "24px 0 28px" }}>SICHTSCHUTZ<br/><span style={{ color: C.accent }}>FÜR SCHULEN.</span><br/><span style={{ color: C.textMuted, fontSize: "0.6em" }}>DIREKT VOM HERSTELLER.</span></h1></Reveal>
-              <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der Standard-Sichtschutz für schriftliche Prüfungen an Schulen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem, robuste Verarbeitung, sofort einsatzbereit.</p></Reveal>
+              <Reveal delay={0.1}><h1 style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(48px, 7vw, 96px)", color: C.text, lineHeight: 0.95, margin: "24px 0 28px" }}><span style={{ color: "#7B1E3A" }}>PULTTEILER</span><br/>FÜR <span style={{ color: "#E2A829" }}>SCHULTISCHE.</span><br/><span style={{ color: C.textMuted, fontSize: "0.6em" }}>KONZENTRATION BRINGT LERNERFOLG.</span></h1></Reveal>
+              <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der bewährte Sichtschutz für Schultische bei schriftlichen Prüfungen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem, robuste Verarbeitung, sofort einsatzbereit.</p></Reveal>
               <Reveal delay={0.3}><div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div></Reveal>
             </div>
             <Reveal delay={0.2}><div style={{ border: `1px solid ${C.border}`, overflow: "hidden", aspectRatio: "4/3", background: C.bgCard, display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "contain" }}/></div></Reveal>
@@ -314,7 +310,7 @@ function Home({ go }) {
       </section>
       <section style={{ background: C.bgCard, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, padding: "48px 32px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 32 }}>
-          {[{ val: "1000+", label: "SCHULEN BELIEFERT" }, { val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "3", label: "LÄNDER: AT · DE · CH" }, { val: "0 €", label: "VERSAND AB 238 €" }].map((m, i) => (
+          {[{ val: "999+", label: "SCHULEN BELIEFERT" }, { val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "3", label: "LÄNDER: AT · DE · CH" }, { val: "0 €", label: "VERSAND AB 238 €" }].map((m, i) => (
             <Reveal key={i} delay={i * 0.08}><div style={{ textAlign: "center", padding: "12px 0" }}><div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.accent, lineHeight: 1 }}>{m.val}</div><div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", color: C.textMuted, marginTop: 8 }}>{m.label}</div></div></Reveal>
           ))}
         </div>
