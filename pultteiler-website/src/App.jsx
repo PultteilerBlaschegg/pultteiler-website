@@ -63,6 +63,7 @@ const NAV = [
   { id: "home", label: "START" },
   { id: "produkte", label: "SHOP" },
   { id: "galerie", label: "REFERENZEN" },
+  { id: "ueber-uns", label: "ÜBER UNS" },
   { id: "kontakt", label: "KONTAKT" },
 ];
 
@@ -449,7 +450,7 @@ function Kontakt() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }} className="contact-g">
             <Reveal><div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "40px 36px", height: "100%" }}>
               <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "0 0 32px" }}>SCHULMITTEL BLASCHEGG</h3>
-              {[{ icon: "●", label: "ANSPRECHPARTNER", val: "Michael Blaschegg" }, { icon: "⌂", label: "ADRESSE", val: "Stücklbachstraße 13, 4813 Altmünster" }, { icon: "✉", label: "E-MAIL", val: "blaschegg@traunseenet.at", href: "mailto:blaschegg@traunseenet.at" }, { icon: "☎", label: "TELEFON", val: "+43 (0) 699 129 613 70", href: "tel:+4369912961370" }, { icon: "◆", label: "UID-NUMMER", val: "ATU37758404" }].map((c, i) => (
+              {[{ icon: "●", label: "ANSPRECHPARTNER", val: "Michael Blaschegg" }, { icon: "⌂", label: "ADRESSE", val: "Stücklbachstraße 13, 4813 Altmünster" }, { icon: "✉", label: "E-MAIL", val: "blaschegg@traunseenet.at", href: "mailto:blaschegg@traunseenet.at" }, { icon: "☎", label: "TELEFON", val: "+43 (0) 699 129 613 70", href: "tel:+4369912961370" }, { icon: "◆", label: "UID-NUMMER", val: "ATU37758404" }, { icon: "▣", label: "UNTERNEHMENSREGISTER", val: "R013F6512, BH Gmunden" }, { icon: "€", label: "BANKVERBINDUNG ÖSTERREICH", val: "IBAN: AT88 3451 0000 0202 6441 · BIC: RZOOAT2L510" }, { icon: "€", label: "BANKVERBINDUNG DEUTSCHLAND", val: "IBAN: DE22 7105 0000 0000 1254 68 · BIC: BYLADEM1BGL" }].map((c, i) => (
                 <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", marginBottom: 28 }}>
                   <div style={{ width: 36, height: 36, background: `${C.accent}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: C.accent, fontSize: 14 }}>{c.icon}</div>
                   <div><div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", color: C.textMuted, marginBottom: 4 }}>{c.label}</div>{c.href ? <a href={c.href} style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.accent, textDecoration: "none" }}>{c.val}</a> : <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.text }}>{c.val}</div>}</div>
@@ -475,6 +476,51 @@ function Kontakt() {
   );
 }
 
+function UeberUns({ go }) {
+  return (
+    <div style={{ paddingTop: 72 }}>
+      <section style={{ padding: "80px 32px 96px", background: C.bg }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <Heading overline="ÜBER UNS" title={"SCHULMITTEL BLASCHEGG\nAUS ALTMÜNSTER AM TRAUNSEE"} sub="Direkt vom Hersteller — seit über 40 Jahren für Schulen in Österreich, Deutschland und der Schweiz."/>
+          <Reveal>
+            <div style={{ border: `1px solid ${C.border}`, overflow: "hidden", marginBottom: 2, background: C.bgCard }}>
+              <img src="/images/klassenzimmer.png" alt="Schüler arbeiten konzentriert mit dem Pultteiler im Klassenzimmer" style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }}/>
+            </div>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "48px 40px", marginBottom: 2 }}>
+              <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "0 0 24px" }}>DIE IDEE HINTER DEM PULTTEILER</h2>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: "0 0 20px" }}>Michael Blaschegg war selbst Lehrer — und kennt die Herausforderungen im Schulalltag aus erster Hand. Tag für Tag werden an unseren Schulen Schularbeiten, informelle Tests, Kontrollarbeiten und Diktate abgehalten. Bei diesen Arbeiten wollen unsere Schüler konzentriert, ungestört und ruhig ihre Leistung zeigen.</p>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: "0 0 20px" }}>Aus dieser Erfahrung heraus entstand der Pultteiler — eine stabile Trennwand für Schultische, die sowohl Arbeitserleichterung für den Lehrer als auch Unterstützung für die Schüler ist.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "48px 40px", marginBottom: 2 }}>
+              <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "0 0 24px" }}>WARUM DER PULTTEILER FUNKTIONIERT</h2>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: "0 0 20px" }}>Es ist nicht mehr notwendig, die Klasse bei einer schriftlichen Lernzielkontrolle in verschiedene Gruppen zu unterteilen — die Möglichkeit der gerechten Benotung ist durch den Sichtschutz garantiert. Vorbesprechung, Nachbesprechung und Verbesserung der Arbeiten erledigt die Klasse gemeinsam.</p>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: "0 0 20px" }}>Das Wandern in einen größeren Klassenraum mit einzelnen Pulten ist nicht mehr notwendig. Die Schüler fühlen sich in der gewohnten Umgebung ihres Klassenraums bei Arbeiten am wohlsten.</p>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: 0 }}>Der stabile Pultteiler schafft Ordnung und einen eigenen Arbeitsplatz. Die Schüler werden von ihren Sitznachbarn nicht abgelenkt, sie können konzentriert ihre Aufgaben erledigen. Die Klammer aus hochwertigem, dauerelastischem Kunststoff ermöglicht einen sicheren Stand der Trennplatte und ist rasch aufgesteckt.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "48px 40px", marginBottom: 2 }}>
+              <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "0 0 24px" }}>SCHON VIELE SCHULEN ÜBERZEUGT</h2>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: "0 0 20px" }}>Schon viele Schulen in Österreich und Deutschland sind begeistert von dieser Arbeitshilfe. Der Pultteiler wird an Volksschulen, Mittelschulen, Gymnasien und Hochschulen gleichermaßen eingesetzt — überall dort, wo schriftliche Prüfungen zum Schulalltag gehören.</p>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: 0 }}>Gefertigt wird direkt in Altmünster am Traunsee — und von dort geliefert an Schulen in Österreich, Deutschland und der Schweiz.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.3}>
+            <div style={{ marginTop: 48, textAlign: "center" }}>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, marginBottom: 24 }}>Fragen zum Pultteiler? Wir sind gerne für Sie da.</p>
+              <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState("home");
   const go = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -487,6 +533,7 @@ export default function App() {
         {page === "home" && <Home go={go}/>}
         {page === "produkte" && <Produkte go={go}/>}
         {page === "galerie" && <Galerie/>}
+        {page === "ueber-uns" && <UeberUns go={go}/>}
         {page === "kontakt" && <Kontakt/>}
         <Footer setPage={go}/>
       </div>
