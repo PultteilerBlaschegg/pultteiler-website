@@ -404,7 +404,7 @@ function Produkte() {
                 {region === "CH" ? (
                   <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>Schweiz: <span style={{ color: C.green, fontWeight: 600 }}>Lieferung inklusive</span>. Unverzollte Lieferung, steuerfrei. Zahlung per Rechnung. Ersatzteile auf Anfrage.</p>
                 ) : (
-                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>AT & DE: € 8,70 — <span style={{ color: C.green, fontWeight: 600 }}>kostenlos ab € 238</span>. Zahlung per Rechnung. Steuerfreie Lieferung nach DE mit UID. E-Rechnungen für österr. Bundesschulen.</p>
+                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>AT & DE: € 8,70 — <span style={{ color: C.green, fontWeight: 600 }}>kostenlos ab € 238</span>. Zahlung per Rechnung. Steuerfreie Lieferung nach DE mit UID. <br/>E-Rechnungen für österr. Bundesschulen.</p>
                 )}
               </div>
             </div>
