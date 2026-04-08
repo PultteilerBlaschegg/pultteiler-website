@@ -32,9 +32,11 @@ function CartProvider({ children }) {
 function useCart() { return useContext(CartCtx); }
 
 /*
-  BILDER — genau diese 7 Dateien müssen in /public/images/ liegen:
-  klassenzimmer.png, koffer-gelb.jpg, koffer-grau.jpg,
-  nahaufnahme.jpeg, Platte.png, PlatteAgelb.png, PlatteBgrau.png, pultteiler-2.jpg, pultteiler-einsatz.jpg, pultteiler-uni.png
+  BILDER — diese Dateien müssen in /public/images/ liegen:
+  klassenzimmer.png, koffer-gelb.jpg, koffer-grau.jpg, Klammer.gif,
+  nahaufnahme.jpeg, pultteiler-2.jpg, pultteiler-einsatz.jpg, pultteiler-uni.png,
+  pultteiler_gelb.jpg, pultteiler_grau.jpg,
+  meduni-innsbruck_1.jpeg, meduni-innsbruck_2.jpeg
 */
 
 const SETS = [
@@ -45,18 +47,20 @@ const SETS = [
 
 const PARTS = [
   { id: "klammer-2", name: "KLAMMER (2 STÜCK)", short: "2x Klammer", desc: "Hochwertige, dauerelastische Klammer im Doppelpack.", priceAT: 19.40, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/Klammer.gif" },
-  { id: "platte-a", name: "TEILERPLATTE A GELB — 50×30 CM", short: "Platte A gelb klein", desc: "Einzelne Ersatzplatte, bis 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 8.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/pultteiler_gelb.jpg" },
-  { id: "platte-b-gelb", name: "TEILERPLATTE B GELB — 50×40 CM", short: "Platte B gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/pultteiler_gelb.jpg" },
-  { id: "platte-b-grau", name: "TEILERPLATTE B GRAU — 50×40 CM", short: "Platte B grau groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#777", img: "/images/pultteiler_grau.jpg" },
+  { id: "platte-a", name: "TEILERPLATTE A GELB — 50×30 CM", short: "Platte A gelb klein", desc: "Einzelne Ersatzplatte, bis 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 8.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/pultteiler_gelb.jpg", zoom: 1.8 },
+  { id: "platte-b-gelb", name: "TEILERPLATTE B GELB — 50×40 CM", short: "Platte B gelb groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#C08B2D", img: "/images/pultteiler_gelb.jpg", zoom: 1.8 },
+  { id: "platte-b-grau", name: "TEILERPLATTE B GRAU — 50×40 CM", short: "Platte B grau groß", desc: "Einzelne Ersatzplatte, ab 5. Schulstufe. Aus hochwertigem Kunststoff.", priceAT: 9.90, tag: "ERSATZTEIL", color: "#777", img: "/images/pultteiler_grau.jpg", zoom: 1.8 },
   { id: "koffer-leer", name: "KOFFER OHNE INHALT", short: "Holzkoffer leer", desc: "Leerer Holzkoffer als Ersatz. Material: Holz.", priceAT: 43.20, tag: "ERSATZTEIL", color: "#C08B2D", img: "" },
 ];
 
 const GALLERY = [
   { src: "/images/klassenzimmer.png", label: "KLASSENZIMMER IM EINSATZ", cat: "PRAXIS" },
-  { src: "/images/pultteiler-uni.png", label: "UNIVERSITÄT HÖRSAAL", cat: "HOCHSCHULE" },
+  { src: "/images/meduni-innsbruck_2.jpeg", label: "MEDUNI INNSBRUCK — LABOR", cat: "HOCHSCHULE" },
   { src: "/images/pultteiler-einsatz.jpg", label: "EDV-RAUM MIT PULTTEILER", cat: "PRAXIS" },
   { src: "/images/koffer-gelb.jpg", label: "HOLZKOFFER SET GELB", cat: "PRODUKT" },
+  { src: "/images/meduni-innsbruck_1.jpeg", label: "MEDUNI INNSBRUCK — NAHAUFNAHME", cat: "HOCHSCHULE" },
   { src: "/images/koffer-grau.jpg", label: "HOLZKOFFER SET GRAU", cat: "PRODUKT" },
+  { src: "/images/pultteiler-uni.png", label: "UNIVERSITÄT HÖRSAAL", cat: "HOCHSCHULE" },
   { src: "/images/pultteiler-2.jpg", label: "PULTTEILER IM GROSSRAUM", cat: "REFERENZ" },
   { src: "/images/nahaufnahme.jpeg", label: "NAHAUFNAHME TRENNWÄNDE", cat: "DETAIL" },
 ];
@@ -463,8 +467,8 @@ function Produkte() {
                 {PARTS.map((p, i) => (
                   <Reveal key={p.id} delay={i * 0.08}>
                     <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: 0, transition: "border-color 0.3s", overflow: "hidden" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
-                      {p.img && <div style={{ background: C.bgElevated, borderBottom: `1px solid ${C.border}`, padding: 16, display: "flex", alignItems: "center", justifyContent: "center", height: 160 }}>
-                        <img src={p.img} alt={p.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" }}/>
+                      {p.img && <div style={{ background: C.bgElevated, borderBottom: `1px solid ${C.border}`, padding: 16, display: "flex", alignItems: "center", justifyContent: "center", height: 160, overflow: "hidden" }}>
+                        <img src={p.img} alt={p.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block", transform: p.zoom ? `scale(${p.zoom})` : "none" }}/>
                       </div>}
                       <div style={{ padding: "20px 24px 28px" }}>
                       <Badge>{p.tag}</Badge>
@@ -632,7 +636,7 @@ function UeberUns({ go }) {
           <Heading overline="ÜBER UNS" title={"SCHULMITTEL BLASCHEGG\nAUS ALTMÜNSTER AM TRAUNSEE"} sub="Direkt vom Hersteller — seit über 40 Jahren für Schulen in Österreich, Deutschland und der Schweiz."/>
           <Reveal>
             <div style={{ border: `1px solid ${C.border}`, overflow: "hidden", marginBottom: 2, background: C.bgCard }}>
-              <img src="/images/klassenzimmer.png" alt="Schüler arbeiten konzentriert mit dem Pultteiler im Klassenzimmer" style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }}/>
+              <img src="/images/meduni-innsbruck_2.jpeg" alt="Pultteiler im Einsatz an der Medizinischen Universität Innsbruck" style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }}/>
             </div>
           </Reveal>
           <Reveal delay={0.05}>
