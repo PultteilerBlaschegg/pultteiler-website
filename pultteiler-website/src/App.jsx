@@ -118,8 +118,8 @@ function CartSidebar({ onClose }) {
     try {
       await fetch("https://formsubmit.co/ajax/blaschegg@traunseenet.at", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: { "Accept": "application/json" },
+        body: formData,
       });
       setStep("confirmed");
       clear();
