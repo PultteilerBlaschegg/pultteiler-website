@@ -62,6 +62,7 @@ const GALLERY = [
 const NAV = [
   { id: "home", label: "START" },
   { id: "produkte", label: "SHOP" },
+  { id: "anleitung", label: "SO FUNKTIONIERT'S" },
   { id: "galerie", label: "REFERENZEN" },
   { id: "ueber-uns", label: "ÜBER UNS" },
   { id: "kontakt", label: "KONTAKT" },
@@ -302,7 +303,7 @@ function Home({ go }) {
             <div>
               <Reveal><Badge>SEIT ÜBER 40 JAHREN — DIREKT VOM HERSTELLER</Badge></Reveal>
               <Reveal delay={0.1}><h1 style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(48px, 7vw, 96px)", color: C.text, lineHeight: 0.95, margin: "24px 0 28px" }}><span style={{ color: "#A01830" }}>PULTTEILER</span><br/>FÜR <span style={{ color: "#F0C645" }}>SCHULTISCHE.</span><br/><span style={{ color: C.textMuted, fontSize: "0.6em" }}>KONZENTRATION BRINGT LERNERFOLG.</span></h1></Reveal>
-              <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der bewährte Sichtschutz für Schultische bei schriftlichen Prüfungen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem, robuste Verarbeitung, sofort einsatzbereit.</p></Reveal>
+              <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der bewährte Sichtschutz für Schultische bei schriftlichen Prüfungen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem, robuste Verarbeitung, sofort einsatzbereit — so schnell aufgebaut, wie das Hefte austeilen.</p></Reveal>
               <Reveal delay={0.3}><div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div></Reveal>
             </div>
             <Reveal delay={0.2}><div style={{ border: `1px solid ${C.border}`, overflow: "hidden", aspectRatio: "4/3", background: C.bgCard, display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "contain" }}/></div></Reveal>
@@ -476,6 +477,66 @@ function Kontakt() {
   );
 }
 
+function Anleitung({ go }) {
+  const steps = [
+    { num: "01", title: "KLAMMER AUFSTECKEN", text: "Stecken Sie die Klammer aus dauerelastischem Kunststoff einfach auf die Tischkante. Sie passt auf alle gängigen Schultische — auch auf Schrägtische.", img: "/images/nahaufnahme.jpeg", alt: "Schritt 1: Pultteiler-Klammer auf Schultisch stecken" },
+    { num: "02", title: "TEILERPLATTE EINSETZEN", text: "Setzen Sie die Teilerplatte in die Klammer ein. Die Platte rastet sicher ein und steht sofort stabil.", img: "/images/koffer-gelb.jpg", alt: "Schritt 2: Teilerplatte in die Klammer einsetzen" },
+    { num: "03", title: "FERTIG — KONZENTRIERT ARBEITEN", text: "Der Pultteiler steht stabil und schafft einen eigenen, abgeschirmten Arbeitsplatz. Nach der Prüfung einfach abnehmen und zurück in den Holzkoffer.", img: "/images/klassenzimmer.png", alt: "Schritt 3: Fertiger Pultteiler am Schultisch im Klassenzimmer" },
+  ];
+  return (
+    <div style={{ paddingTop: 72 }}>
+      <section style={{ padding: "80px 32px 96px", background: C.bg }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <Heading overline="AUFBAUANLEITUNG" title={"SO FUNKTIONIERT DER PULTTEILER\nAUFBAU IN 3 SCHRITTEN"} sub="In Sekunden aufgestellt — so schnell wie das Hefte austeilen." align="center"/>
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {steps.map((s, i) => (
+              <Reveal key={i} delay={i * 0.1}>
+                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: i % 2 === 0 ? "1fr 1.2fr" : "1.2fr 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card" onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                  {i % 2 === 1 && <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}40`, lineHeight: 1 }}>SCHRITT {s.num}</span>
+                    <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>{s.title}</h2>
+                    <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>{s.text}</p>
+                  </div>}
+                  <div style={{ background: C.bgElevated, borderLeft: i % 2 === 1 ? "none" : undefined, borderRight: i % 2 === 0 ? "none" : undefined, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, minHeight: 240 }}>
+                    <img src={s.img} alt={s.alt} style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: 240, display: "block" }}/>
+                  </div>
+                  {i % 2 === 0 && <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}40`, lineHeight: 1 }}>SCHRITT {s.num}</span>
+                    <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>{s.title}</h2>
+                    <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>{s.text}</p>
+                  </div>}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={0.35}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, marginTop: 2 }} className="contact-g">
+              <div style={{ background: `${C.green}08`, border: `1px solid ${C.green}25`, padding: "32px 28px", display: "flex", gap: 14, alignItems: "flex-start" }}>
+                <div style={{ width: 32, height: 32, background: `${C.green}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke={C.green} strokeWidth="2" strokeLinecap="square"/></svg>
+                </div>
+                <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.65, margin: 0 }}>Passt auf alle gängigen Schultische. Die Klammer aus dauerelastischem Kunststoff hinterlässt keine Spuren am Tisch.</p>
+              </div>
+              <div style={{ background: `${C.green}08`, border: `1px solid ${C.green}25`, padding: "32px 28px", display: "flex", gap: 14, alignItems: "flex-start" }}>
+                <div style={{ width: 32, height: 32, background: `${C.green}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke={C.green} strokeWidth="2" strokeLinecap="square"/></svg>
+                </div>
+                <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.65, margin: 0 }}>Nach dem Einsatz kommen alle Pultteiler zurück in den mitgelieferten Holzkoffer — platzsparend und sofort bereit für den nächsten Einsatz.</p>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.4}>
+            <div style={{ marginTop: 56, textAlign: "center" }}>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 16, color: C.textMuted, marginBottom: 24 }}>Überzeugt? Bestellen Sie den Pultteiler direkt vom Hersteller.</p>
+              <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function UeberUns({ go }) {
   return (
     <div style={{ paddingTop: 72 }}>
@@ -532,6 +593,7 @@ export default function App() {
         <Nav page={page} setPage={go}/>
         {page === "home" && <Home go={go}/>}
         {page === "produkte" && <Produkte go={go}/>}
+        {page === "anleitung" && <Anleitung go={go}/>}
         {page === "galerie" && <Galerie/>}
         {page === "ueber-uns" && <UeberUns go={go}/>}
         {page === "kontakt" && <Kontakt/>}
