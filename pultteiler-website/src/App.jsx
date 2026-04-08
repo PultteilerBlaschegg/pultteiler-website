@@ -112,12 +112,51 @@ function CartSidebar({ onClose }) {
   const { items, updateQty, remove, total, count, region, getPrice, shipping, clear } = useCart();
   const [step, setStep] = useState("cart");
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [formValues, setFormValues] = useState({});
-  const formRef = useRef(null);
   const inp = { width: "100%", padding: "12px 14px", background: C.bgCard, border: `1px solid ${C.border}`, fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.text, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s", marginBottom: 12 };
   const regionLabel = region === "CH" ? "Schweiz (steuerfrei, inkl. Lieferung)" : "Österreich/Deutschland (inkl. MwSt)";
-  const orderLines = items.map(i => `${i.qty}x ${i.short} — € ${(getPrice(i) * i.qty).toFixed(2)}`).join("\n");
-  const orderSummary = `Region: ${regionLabel}\n\n${orderLines}\n\nZwischensumme: € ${total.toFixed(2)}\nVersand: ${shipping === 0 ? "Kostenlos / inkl." : "€ " + shipping.toFixed(2)}\nGesamtsumme: € ${(total + shipping).toFixed(2)}`;
+
+  const generateOrderNr = () => {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const d = String(now.getDate()).padStart(2, "0");
+    const h = String(now.getHours()).padStart(2, "0");
+    const min = String(now.getMinutes()).padStart(2, "0");
+    return `${y}${m}${d}${h}${min}`;
+  };
+
+  const buildMailBody = (orderNr) => {
+    const productLines = items.map((i, idx) => {
+      const lineTotal = (getPrice(i) * i.qty).toFixed(2);
+      return `Produkt ${idx + 1}: ${i.name}\nMenge: ${i.qty}\nPreis pro Stück: € ${getPrice(i).toFixed(2)}\nZwischensumme: € ${lineTotal}`;
+    }).join("\n\n");
+    const shippingText = shipping === 0 ? "Kostenlos / inkl." : `€ ${shipping.toFixed(2)}`;
+    const plzOrt = `${formValues["PLZ"] || ""} ${formValues["Ort"] || ""}`.trim();
+    const addr = [formValues["Name / Schule"], formValues["Ansprechperson"], formValues["Adresse"], plzOrt, formValues["Land"]].filter(Boolean).join("\n");
+    return {
+      "01 ── Auftrags-Nr.": orderNr,
+      "02 ── Region": regionLabel,
+      "03 ── Bestellte Produkte": productLines,
+      "04 ── Versand": shippingText,
+      "05 ── Gesamtbetrag (inkl. MwSt)": `€ ${(total + shipping).toFixed(2)}`,
+      "06 ── Rechnungsadresse": addr,
+      "07 ── E-Mail": formValues["email"] || "",
+      "08 ── Telefon": formValues["Telefon"] || "–",
+      "09 ── UID-Nummer": formValues["UID-Nummer"] || "–",
+      "10 ── Einkäufergruppe": formValues["Einkäufergruppe"] || "–",
+      "11 ── Anmerkungen": formValues["Anmerkungen"] || "–",
+      "12 ── Zahlungsart": "Rechnung",
+    };
+  };
+
+  const orderSummaryForMailto = () => {
+    const lines = items.map(i => `${i.qty}x ${i.name} — € ${(getPrice(i) * i.qty).toFixed(2)}`).join("\n");
+    const shippingText = shipping === 0 ? "Kostenlos / inkl." : `€ ${shipping.toFixed(2)}`;
+    const plzOrt = `${formValues["PLZ"] || ""} ${formValues["Ort"] || ""}`.trim();
+    return `Region: ${regionLabel}\n\n${lines}\n\nVersand: ${shippingText}\nGesamtbetrag: € ${(total + shipping).toFixed(2)}\n\nRechnungsadresse:\n${formValues["Name / Schule"] || ""}\n${formValues["Ansprechperson"] || ""}\n${formValues["Adresse"] || ""}\n${plzOrt}\n${formValues["Land"] || ""}\nE-Mail: ${formValues["email"] || ""}\nTelefon: ${formValues["Telefon"] || "–"}`;
+  };
 
   const goToKontrolle = (e) => {
     e.preventDefault();
@@ -128,45 +167,45 @@ function CartSidebar({ onClose }) {
     setStep("kontrolle");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSending(true);
-    const iframeName = "formsubmit_iframe";
-    let iframe = document.getElementById(iframeName);
-    if (!iframe) {
-      iframe = document.createElement("iframe");
-      iframe.id = iframeName;
-      iframe.name = iframeName;
-      iframe.style.display = "none";
-      document.body.appendChild(iframe);
-    }
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "https://formsubmit.co/blaschegg@traunseenet.at";
-    form.target = iframeName;
-    form.style.display = "none";
-    const fields = {
-      "_subject": "Neue Bestellung über pultteiler.eu",
-      "_template": "table",
-      "_captcha": "false",
-      "_cc": "inessteiner@liwest.at",
-      "_next": "https://pultteiler.eu",
-      "Bestellung": orderSummary,
+    setError("");
+
+    const orderNr = generateOrderNr();
+    const mailBody = buildMailBody(orderNr);
+
+    const payload = {
+      ...mailBody,
+      _subject: `Neue Bestellung Nr. ${orderNr} — pultteiler.eu`,
+      _template: "table",
+      _captcha: "false",
+      _cc: `inessteiner@liwest.at,${formValues["email"] || ""}`,
+      _replyto: formValues["email"] || "",
     };
-    Object.entries(formValues).forEach(([k, v]) => { if (k !== "Bestellung") fields[k] = v; });
-    Object.entries(fields).forEach(([k, v]) => {
-      const input = document.createElement("input");
-      input.type = "hidden"; input.name = k; input.value = v;
-      form.appendChild(input);
-    });
-    document.body.appendChild(form);
-    iframe.onload = () => {
-      setStep("confirmed");
-      clear();
+
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/blaschegg@traunseenet.at", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setStep("confirmed");
+        clear();
+      } else {
+        setError(data.message || "Bestellung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.");
+      }
+    } catch (err) {
+      setError("Verbindungsfehler. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail an blaschegg@traunseenet.at");
+    } finally {
       setSending(false);
-      form.remove();
-    };
-    setTimeout(() => { if (sending) { setStep("confirmed"); clear(); setSending(false); form.remove(); } }, 5000);
-    form.submit();
+    }
   };
 
   return (
@@ -261,7 +300,7 @@ function CartSidebar({ onClose }) {
 
         {step === "kontrolle" && (
           <div style={{ flex: 1, overflow: "auto", padding: "24px 28px" }}>
-            <button onClick={() => setStep("checkout")} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", padding: 0, marginBottom: 20 }}>← ZURÜCK ZUR EINGABE</button>
+            <button onClick={() => { setStep("checkout"); setError(""); }} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", padding: 0, marginBottom: 20 }}>← ZURÜCK ZUR EINGABE</button>
             <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "16px 20px", marginBottom: 16 }}>
               <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 10 }}>IHRE BESTELLUNG</div>
               {items.map(item => (
@@ -307,6 +346,14 @@ function CartSidebar({ onClose }) {
               {sending ? "WIRD GESENDET..." : "BESTELLUNG ABSENDEN →"}
             </button>
             <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, color: C.textMuted, textAlign: "center", marginTop: 12 }}>Zahlung per Rechnung. Sie erhalten die Rechnung mit der Lieferung oder per E-Mail.</p>
+            {error && (
+              <div style={{ background: "#FEF2F2", border: `1px solid ${C.red}`, padding: "14px 18px", marginTop: 16 }}>
+                <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.red, lineHeight: 1.5 }}>{error}</div>
+                <a href={`mailto:blaschegg@traunseenet.at?subject=${encodeURIComponent("Bestellung über pultteiler.eu")}&body=${encodeURIComponent(orderSummaryForMailto())}`} style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.red, fontWeight: 600, display: "inline-block", marginTop: 8 }}>
+                  → Alternativ per E-Mail bestellen
+                </a>
+              </div>
+            )}
           </div>
         )}
 
@@ -533,7 +580,48 @@ function Galerie() {
 
 function Kontakt() {
   const [sent, setSent] = useState(false);
+  const [contactSending, setContactSending] = useState(false);
+  const [contactError, setContactError] = useState("");
   const inp = { width: "100%", padding: "14px 16px", background: C.bgCard, border: `1px solid ${C.border}`, fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.text, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactSending(true);
+    setContactError("");
+
+    const fd = new FormData(e.target);
+    const data = {};
+    fd.forEach((v, k) => { data[k] = v; });
+
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/blaschegg@traunseenet.at", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          _subject: "Neue Kontaktanfrage über pultteiler.eu",
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok && result.success) {
+        setSent(true);
+      } else {
+        setContactError(result.message || "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.");
+      }
+    } catch (err) {
+      setContactError("Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an blaschegg@traunseenet.at");
+    } finally {
+      setContactSending(false);
+    }
+  };
+
   return (
     <div style={{ paddingTop: 72 }}>
       <section style={{ padding: "80px 32px 96px", background: C.bg }}>
@@ -554,11 +642,19 @@ function Kontakt() {
                 <div style={{ textAlign: "center", padding: "64px 0" }}><div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.green }}>✓</div><h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 8px" }}>NACHRICHT GESENDET</h3><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.textMuted }}>Wir melden uns in Kürze.</p></div>
               ) : (
                 <><h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, color: C.text, margin: "0 0 28px" }}>NACHRICHT SENDEN</h3>
-                {[{ label: "NAME / INSTITUTION", ph: "Ihr Name oder Schulname", type: "text" }, { label: "E-MAIL", ph: "ihre@email.at", type: "email" }].map((f, i) => (
-                  <div key={i} style={{ marginBottom: 16 }}><label style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, display: "block", marginBottom: 8 }}>{f.label}</label><input type={f.type} placeholder={f.ph} style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/></div>
-                ))}
-                <div style={{ marginBottom: 24 }}><label style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, display: "block", marginBottom: 8 }}>NACHRICHT</label><textarea rows={5} placeholder="Ihre Nachricht oder Bestellanfrage..." style={{ ...inp, resize: "vertical" }} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/></div>
-                <Btn onClick={() => setSent(true)} full>NACHRICHT SENDEN →</Btn></>
+                <form onSubmit={handleContactSubmit}>
+                  {[{ label: "NAME / INSTITUTION", ph: "Ihr Name oder Schulname", type: "text", name: "Name" }, { label: "E-MAIL", ph: "ihre@email.at", type: "email", name: "email" }].map((f, i) => (
+                    <div key={i} style={{ marginBottom: 16 }}><label style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, display: "block", marginBottom: 8 }}>{f.label}</label><input type={f.type} name={f.name} placeholder={f.ph} required style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/></div>
+                  ))}
+                  <div style={{ marginBottom: 24 }}><label style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, display: "block", marginBottom: 8 }}>NACHRICHT</label><textarea rows={5} name="Nachricht" placeholder="Ihre Nachricht oder Bestellanfrage..." required style={{ ...inp, resize: "vertical" }} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/></div>
+                  <Btn onClick={() => {}} full>{contactSending ? "WIRD GESENDET..." : "NACHRICHT SENDEN →"}</Btn>
+                  {contactError && (
+                    <div style={{ background: "#FEF2F2", border: `1px solid ${C.red}`, padding: "12px 16px", marginTop: 12 }}>
+                      <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.red, lineHeight: 1.5 }}>{contactError}</div>
+                    </div>
+                  )}
+                </form>
+                </>
               )}
             </div></Reveal>
           </div>
