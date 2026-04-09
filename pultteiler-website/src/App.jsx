@@ -31,14 +31,6 @@ function CartProvider({ children }) {
 }
 function useCart() { return useContext(CartCtx); }
 
-/*
-  BILDER — diese Dateien müssen in /public/images/ liegen:
-  klassenzimmer.png, koffer-gelb.jpg, koffer-grau.jpg, Klammer_2.png,
-  nahaufnahme.jpeg, pultteiler-2.jpg, pultteiler-einsatz.jpg, pultteiler-uni.png,
-  pultteiler_gelb.png, pultteiler_grau.png,
-  meduni-innsbruck_1.jpeg, meduni-innsbruck_2.jpeg
-*/
-
 const SETS = [
   { id: "gelb-vs", name: "SET GELB — BIS 5. SCHULJAHR", short: "Gelb bis 5. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×30 cm) und 12 Klammern. Empfohlen bis zum 5. Schuljahr.", priceAT: 241, priceCH: 238, tag: "", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
   { id: "gelb-ms", name: "SET GELB — AB 6. SCHULJAHR", short: "Gelb ab 6. SJ", desc: "1 Holzkoffer mit 12 Teilerplatten (50×40 cm) und 12 Klammern. Empfohlen ab dem 6. Schuljahr.", priceAT: 255, priceCH: 252, tag: "", color: "#C08B2D", img: "/images/koffer-gelb.jpg" },
@@ -176,17 +168,12 @@ function CartSidebar({ onClose }) {
 
     try {
       await loadEmailJS();
-
-      // 1) Interne Mail an Blaschegg + CC Steiner
       await window.emailjs.send("service_cobcbsg", "template_7kke6e4", templateParams);
-
-      // 2) Bestätigungsmail an Kunden
       try {
         await window.emailjs.send("service_cobcbsg", "template_ko0cjvs", templateParams);
       } catch (e) {
         console.warn("Kunden-E-Mail konnte nicht gesendet werden:", e);
       }
-
       setStep("confirmed");
       clear();
     } catch (err) {
@@ -559,8 +546,7 @@ function Galerie() {
                 <div onClick={() => setLightbox(r)} style={{ background: C.bgCard, border: `1px solid ${C.border}`, aspectRatio: "16/10", position: "relative", overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
                   <img src={r.src} alt={r.label} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", padding: 8 }}/>
                   <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "12px 20px", background: C.bgCard, borderTop: `1px solid ${C.border}` }}>
-                    <Badge>{r.cat}</Badge>
-                    <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 600, color: C.text, marginTop: 6, letterSpacing: "0.04em" }}>{r.label}</div>
+                    <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 600, color: C.accent, letterSpacing: "0.04em" }}>{r.label}</div>
                   </div>
                 </div>
               </Reveal>
