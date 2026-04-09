@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
 
 const C = {
-  bg: "#EDF3FA", bgCard: "#F5F8FC", bgElevated: "#E3ECF5", surface: "#D6E2F0",
-  text: "#1A1F2E", textMuted: "#6B7280", accent: "#3B7FBF", accentHover: "#4A91D4",
-  white: "#FFF", border: "#CFDBEA", borderLight: "#C0CFE0", green: "#3B7FBF", red: "#C44D3F",
-  dark: "#1A1F2E",
+  bg: "#E2EAF4", bgCard: "#FFFFFF", bgElevated: "#F0F4F9", surface: "#D8E2EE",
+  text: "#1A2235", textMuted: "#5A6478", accent: "#2C5F8A", accentHover: "#3570A0",
+  white: "#FFF", border: "#C8D4E2", borderLight: "#B8C6D8", green: "#2C5F8A", red: "#C44D3F",
+  dark: "#1A2235",
 };
 
 const CartCtx = createContext();
@@ -80,7 +80,7 @@ function Nav({ page, setPage }) {
   useEffect(() => { const fn = () => setScrolled(window.scrollY > 20); window.addEventListener("scroll", fn); return () => window.removeEventListener("scroll", fn); }, []);
   return (
     <>
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(255,255,255,0.96)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.3s" }}>
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? C.bgCard : "transparent", borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.3s" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button onClick={() => { setPage("home"); setOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, padding: 0 }}>
             <img src="/images/Klammer.gif" alt="Pultteiler Klammer" style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4 }}/>
@@ -417,8 +417,6 @@ function Home({ go }) {
   return (
     <div>
       <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "120px 32px 80px", background: C.bg, position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: `radial-gradient(${C.border} 1px, transparent 1px)`, backgroundSize: "40px 40px", opacity: 0.5 }}/>
-        <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: `linear-gradient(180deg, transparent 20%, ${C.accent} 50%, transparent 80%)` }}/>
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1, width: "100%" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: 64, alignItems: "center" }} className="hero-g">
             <div>
@@ -429,7 +427,7 @@ function Home({ go }) {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <Reveal delay={0.15}><div style={{ marginLeft: 0, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/meduni-innsbruck_2.jpeg" alt="Meduni Innsbruck Labor" style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}/></div></Reveal>
-              <Reveal delay={0.25}><div style={{ marginLeft: 48, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/pultteiler-uni.png" alt="Universität Hörsaal" style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}/></div></Reveal>
+              <Reveal delay={0.25}><div style={{ marginLeft: 48, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/klassenzimmer.png" alt="Klassenzimmer im Einsatz" style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}/></div></Reveal>
               <Reveal delay={0.35}><div style={{ marginLeft: 0, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/pultteiler-einsatz.jpg" alt="EDV-Raum mit Pultteiler" style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}/></div></Reveal>
             </div>
           </div>
