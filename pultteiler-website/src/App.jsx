@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
 
 const C = {
-  bg: "#F8FAFE", bgCard: "#F2F6FB", bgElevated: "#E8EFF8", surface: "#DDE6F0",
+  bg: "#EDF3FA", bgCard: "#F5F8FC", bgElevated: "#E3ECF5", surface: "#D6E2F0",
   text: "#1A1F2E", textMuted: "#6B7280", accent: "#3B7FBF", accentHover: "#4A91D4",
-  white: "#FFF", border: "#D6DEE8", borderLight: "#C8D3DF", green: "#3B7FBF", red: "#C44D3F",
+  white: "#FFF", border: "#CFDBEA", borderLight: "#C0CFE0", green: "#3B7FBF", red: "#C44D3F",
   dark: "#1A1F2E",
 };
 
@@ -425,10 +425,14 @@ function Home({ go }) {
             <div>
               <Reveal><Badge>SEIT ÜBER 40 JAHREN — DIREKT VOM HERSTELLER</Badge></Reveal>
               <Reveal delay={0.1}><h1 style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(48px, 7vw, 96px)", color: C.text, lineHeight: 0.95, margin: "24px 0 28px" }}><span style={{ color: "#A01830" }}>PULTTEILER</span><br/>FÜR <span style={{ color: "#F0C645" }}>SCHULTISCHE.</span><br/><span style={{ color: C.textMuted, fontSize: "0.6em" }}>KONZENTRATION BRINGT LERNERFOLG.</span></h1></Reveal>
-              <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20 }}>Der Pultteiler ist der bewährte Sichtschutz für Schultische bei schriftlichen Prüfungen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem — Teilerplatte und Pultklammer sind schnell aufgebaut. Passend für alle gängigen Schultische mit einer Tischplattenstärke bis 3 cm.</p></Reveal>
+              <Reveal delay={0.2}><p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, color: C.textMuted, lineHeight: 1.7, maxWidth: 520, margin: "0 0 40px" }}>Der Pultteiler ist der bewährte Sichtschutz für Schultische bei schriftlichen Prüfungen in Österreich, Deutschland und der Schweiz. Einfaches Stecksystem — Teilerplatte und Pultklammer sind schnell aufgebaut. Passend für alle gängigen Schultische mit einer Tischplattenstärke bis 3 cm.</p></Reveal>
               <Reveal delay={0.3}><div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div></Reveal>
             </div>
-            <Reveal delay={0.2}><div style={{ overflow: "hidden", aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/images/klassenzimmer.png" alt="Pultteiler im Klassenzimmer" style={{ width: "100%", height: "100%", objectFit: "contain" }}/></div></Reveal>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <Reveal delay={0.15}><div style={{ marginLeft: 0, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/meduni-innsbruck_2.jpeg" alt="Meduni Innsbruck Labor" style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}/></div></Reveal>
+              <Reveal delay={0.25}><div style={{ marginLeft: 48, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/pultteiler-uni.png" alt="Universität Hörsaal" style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}/></div></Reveal>
+              <Reveal delay={0.35}><div style={{ marginLeft: 0, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/pultteiler-einsatz.jpg" alt="EDV-Raum mit Pultteiler" style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}/></div></Reveal>
+            </div>
           </div>
         </div>
       </section>
