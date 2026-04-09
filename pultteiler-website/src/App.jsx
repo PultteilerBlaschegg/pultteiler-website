@@ -317,6 +317,9 @@ function CartSidebar({ onClose }) {
                 );
               })}
             </div>
+            <div style={{ background: `${C.accent}08`, border: `1px solid ${C.accent}25`, padding: "12px 16px", marginBottom: 16 }}>
+              <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>Mit dem Absenden der Bestellung bestätigen Sie, die <span style={{ color: C.accent, cursor: "pointer", textDecoration: "underline" }} onClick={() => window.open("#agb", "_blank")}>AGB</span> und <span style={{ color: C.accent, cursor: "pointer", textDecoration: "underline" }} onClick={() => window.open("#datenschutz", "_blank")}>Datenschutzerklärung</span> gelesen zu haben. Als Verbraucher haben Sie ein 14-tägiges Widerrufsrecht gem. § 11 FAGG.</p>
+            </div>
             <button onClick={handleSubmit} disabled={sending} style={{ width: "100%", background: sending ? C.textMuted : C.dark, color: C.white, border: "none", padding: "16px", fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", cursor: sending ? "wait" : "pointer" }}>
               {sending ? "WIRD GESENDET..." : "BESTELLUNG ABSENDEN →"}
             </button>
@@ -385,8 +388,12 @@ function Heading({ overline, title, sub, align = "left" }) { return (<div style=
 function Btn({ children, onClick, variant = "primary", full = false }) { const p = variant === "primary"; return <button onClick={onClick} style={{ background: p ? C.dark : "transparent", color: p ? C.white : C.text, border: p ? "none" : `1.5px solid ${C.borderLight}`, padding: "14px 32px", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer", transition: "all 0.2s", width: full ? "100%" : "auto" }} onMouseEnter={e => { if (p) { e.target.style.background = "#333"; e.target.style.transform = "translateY(-2px)"; } else { e.target.style.borderColor = C.accent; e.target.style.color = C.accent; }}} onMouseLeave={e => { if (p) { e.target.style.background = C.dark; e.target.style.transform = "translateY(0)"; } else { e.target.style.borderColor = C.borderLight; e.target.style.color = C.text; }}}>{children}</button>; }
 
 function RegionToggle() {
-  const { region, setRegion, clear } = useCart();
-  const toggle = (r) => { if (r !== region) { clear(); setRegion(r); } };
+  const { region, setRegion, clear, count } = useCart();
+  const toggle = (r) => {
+    if (r === region) return;
+    if (count > 0 && !window.confirm("Region wechseln? Ihr Warenkorb wird dabei geleert.")) return;
+    clear(); setRegion(r);
+  };
   return (
     <div style={{ display: "inline-flex", border: `1px solid ${C.border}`, marginBottom: 32 }}>
       {[{ id: "AT", label: "🇦🇹 🇩🇪  ÖSTERREICH & DEUTSCHLAND" }, { id: "CH", label: "🇨🇭  SCHWEIZ" }].map(r => (
@@ -1003,6 +1010,26 @@ function Datenschutz() {
 export default function App() {
   const [page, setPage] = useState("home");
   const go = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
+
+  useEffect(() => {
+    const titles = { home: "Pultteiler — Der bewährte Sichtschutz für Schultische", produkte: "Produkte & Preise — Pultteiler", anleitung: "So funktioniert's — Pultteiler", galerie: "Referenzen — Pultteiler", "ueber-uns": "Über uns — Pultteiler", kontakt: "Kontakt — Pultteiler", impressum: "Impressum — Pultteiler", agb: "AGB — Pultteiler", datenschutz: "Datenschutz — Pultteiler" };
+    document.title = titles[page] || "Pultteiler";
+  }, [page]);
+
+  useEffect(() => {
+    if (!document.querySelector('meta[name="description"]')) {
+      const meta = document.createElement("meta");
+      meta.name = "description";
+      meta.content = "Der Pultteiler ist der bewährte Sichtschutz für Schultische bei schriftlichen Prüfungen — europaweit. Einfaches Stecksystem, direkt vom Hersteller. Seit über 40 Jahren.";
+      document.head.appendChild(meta);
+    }
+    if (!document.querySelector('link[rel="icon"]')) {
+      const link = document.createElement("link");
+      link.rel = "icon";
+      link.href = "/images/Klammer_2.png";
+      document.head.appendChild(link);
+    }
+  }, []);
   return (
     <CartProvider>
       <div style={{ background: C.bg, minHeight: "100vh", color: C.text }}>
