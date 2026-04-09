@@ -127,30 +127,6 @@ function CartSidebar({ onClose }) {
     return `${y}${m}${d}${h}${min}`;
   };
 
-  const buildMailBody = (orderNr) => {
-    const productLines = items.map((i, idx) => {
-      const lineTotal = (getPrice(i) * i.qty).toFixed(2);
-      return `Produkt ${idx + 1}: ${i.name}\nMenge: ${i.qty}\nPreis pro Stück: € ${getPrice(i).toFixed(2)}\nZwischensumme: € ${lineTotal}`;
-    }).join("\n\n");
-    const shippingText = shipping === 0 ? "Kostenlos / inkl." : `€ ${shipping.toFixed(2)}`;
-    const plzOrt = `${formValues["PLZ"] || ""} ${formValues["Ort"] || ""}`.trim();
-    const addr = [formValues["Name / Schule"], formValues["Ansprechperson"], formValues["Adresse"], plzOrt, formValues["Land"]].filter(Boolean).join("\n");
-    return {
-      "01 ── Auftrags-Nr.": orderNr,
-      "02 ── Region": regionLabel,
-      "03 ── Bestellte Produkte": productLines,
-      "04 ── Versand": shippingText,
-      "05 ── Gesamtbetrag (inkl. MwSt)": `€ ${(total + shipping).toFixed(2)}`,
-      "06 ── Rechnungsadresse": addr,
-      "07 ── E-Mail": formValues["email"] || "",
-      "08 ── Telefon": formValues["Telefon"] || "–",
-      "09 ── UID-Nummer": formValues["UID-Nummer"] || "–",
-      "10 ── Einkäufergruppe": formValues["Einkäufergruppe"] || "–",
-      "11 ── Anmerkungen": formValues["Anmerkungen"] || "–",
-      "12 ── Zahlungsart": "Rechnung",
-    };
-  };
-
   const orderSummaryForMailto = () => {
     const lines = items.map(i => `${i.qty}x ${i.name} — € ${(getPrice(i) * i.qty).toFixed(2)}`).join("\n");
     const shippingText = shipping === 0 ? "Kostenlos / inkl." : `€ ${shipping.toFixed(2)}`;
@@ -182,56 +158,42 @@ function CartSidebar({ onClose }) {
     setError("");
 
     const orderNr = generateOrderNr();
-    const mailBody = buildMailBody(orderNr);
     const shippingText = shipping === 0 ? "Kostenlos / inkl." : `€ ${shipping.toFixed(2)}`;
     const bestellungText = items.map(i => `${i.qty}x ${i.name} — € ${(getPrice(i) * i.qty).toFixed(2)}`).join("\n");
+    const plzOrt = `${formValues["PLZ"] || ""} ${formValues["Ort"] || ""}`.trim();
+    const adresseText = [formValues["Name / Schule"], formValues["Ansprechperson"], formValues["Adresse"], plzOrt, formValues["Land"]].filter(Boolean).join("\n");
 
-    // 1) Interne Mail an Blaschegg + Steiner (FormSubmit)
-    const payload = {
-      ...mailBody,
-      _subject: `Neue Bestellung Nr. ${orderNr} — pultteiler.eu`,
-      _template: "table",
-      _captcha: "false",
-      _cc: "inessteiner@liwest.at",
-      _replyto: formValues["email"] || "",
+    const templateParams = {
+      kunde_email: formValues["email"] || "",
+      order_nr: orderNr,
+      region: region === "CH" ? "Schweiz" : "Österreich / Deutschland",
+      bestellung: bestellungText,
+      versand: shippingText,
+      gesamt: `€ ${(total + shipping).toFixed(2)}`,
+      adresse: adresseText,
+      telefon: formValues["Telefon"] || "–",
+      uid: formValues["UID-Nummer"] || "–",
+      einkaufergruppe: formValues["Einkäufergruppe"] || "–",
+      anmerkungen: formValues["Anmerkungen"] || "–",
     };
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/blaschegg@traunseenet.at", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      await loadEmailJS();
 
-      const data = await res.json();
+      // 1) Interne Mail an Blaschegg + CC Steiner
+      await window.emailjs.send("service_cobcbsg", "template_7kke6e4", templateParams);
 
-      if (res.ok && data.success) {
-        // 2) Bestätigungsmail an Kunden (EmailJS)
-        try {
-          await loadEmailJS();
-          await window.emailjs.send("service_cobcbsg", "template_ko0cjvs", {
-            kunde_email: formValues["email"],
-            order_nr: orderNr,
-            region: region === "CH" ? "Schweiz" : "Österreich / Deutschland",
-            bestellung: bestellungText,
-            versand: shippingText,
-            gesamt: `€ ${(total + shipping).toFixed(2)}`,
-          });
-        } catch (e) {
-          // Kundenmail fehlgeschlagen — Bestellung ist trotzdem eingegangen
-          console.warn("Kunden-E-Mail konnte nicht gesendet werden:", e);
-        }
-
-        setStep("confirmed");
-        clear();
-      } else {
-        setError(data.message || "Bestellung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.");
+      // 2) Bestätigungsmail an Kunden
+      try {
+        await window.emailjs.send("service_cobcbsg", "template_ko0cjvs", templateParams);
+      } catch (e) {
+        console.warn("Kunden-E-Mail konnte nicht gesendet werden:", e);
       }
+
+      setStep("confirmed");
+      clear();
     } catch (err) {
-      setError("Verbindungsfehler. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail an blaschegg@traunseenet.at");
+      setError("Bestellung konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail an blaschegg@traunseenet.at");
     } finally {
       setSending(false);
     }
@@ -474,7 +436,7 @@ function Home({ go }) {
       </section>
       <section style={{ background: C.bgCard, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, padding: "48px 32px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 32 }}>
-          {[{ val: "999+", label: "SCHULEN BELIEFERT" }, { val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "3", label: "LÄNDER: AT · DE · CH" }, { val: "✓", label: "DIREKT VOM HERSTELLER" }].map((m, i) => (
+          {[{ val: "40+", label: "JAHRE ERFAHRUNG" }, { val: "✓", label: "LIEFERUNG EUROPAWEIT" }, { val: "✓", label: "DIREKT VOM HERSTELLER" }].map((m, i) => (
             <Reveal key={i} delay={i * 0.08}><div style={{ textAlign: "center", padding: "12px 0" }}><div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.accent, lineHeight: 1 }}>{m.val}</div><div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", color: C.textMuted, marginTop: 8 }}>{m.label}</div></div></Reveal>
           ))}
         </div>
@@ -583,6 +545,7 @@ function Produkte() {
 }
 
 function Galerie() {
+  const [lightbox, setLightbox] = useState(null);
   return (
     <div style={{ paddingTop: 72 }}>
       <section style={{ padding: "80px 32px 96px", background: C.bg }}>
@@ -591,9 +554,9 @@ function Galerie() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 2 }}>
             {GALLERY.map((r, i) => (
               <Reveal key={i} delay={i * 0.05}>
-                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, aspectRatio: "16/10", position: "relative", overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                <div onClick={() => setLightbox(r)} style={{ background: C.bgCard, border: `1px solid ${C.border}`, aspectRatio: "16/10", position: "relative", overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
                   <img src={r.src} alt={r.label} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", padding: 8 }}/>
-                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "32px 20px 16px", background: "linear-gradient(transparent, rgba(255,255,255,0.95))" }}>
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "12px 20px", background: C.bgCard, borderTop: `1px solid ${C.border}` }}>
                     <Badge>{r.cat}</Badge>
                     <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 600, color: C.text, marginTop: 6, letterSpacing: "0.04em" }}>{r.label}</div>
                   </div>
@@ -603,6 +566,15 @@ function Galerie() {
           </div>
         </div>
       </section>
+      {lightbox && (
+        <div onClick={() => setLightbox(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 24 }}>
+          <button onClick={() => setLightbox(null)} style={{ position: "absolute", top: 24, right: 32, background: "none", border: "none", color: "#fff", fontSize: 32, cursor: "pointer", zIndex: 301 }}>✕</button>
+          <img src={lightbox.src} alt={lightbox.label} style={{ maxWidth: "90vw", maxHeight: "85vh", objectFit: "contain", display: "block" }}/>
+          <div style={{ position: "absolute", bottom: 32, left: 0, right: 0, textAlign: "center" }}>
+            <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, fontWeight: 600, color: "#fff", letterSpacing: "0.06em", background: "rgba(0,0,0,0.5)", padding: "8px 20px" }}>{lightbox.label}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
