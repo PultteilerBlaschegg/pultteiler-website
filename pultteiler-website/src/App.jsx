@@ -367,8 +367,13 @@ function Footer({ setPage }) {
           <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.text, lineHeight: 2 }}>Schulmittel Blaschegg<br/>Michael Blaschegg<br/>Stücklbachstraße 13, 4813 Altmünster<br/><a href="mailto:blaschegg@traunseenet.at" style={{ color: C.accent, textDecoration: "none" }}>blaschegg@traunseenet.at</a><br/>+43 (0) 676 935 40 33<br/>+43 (0) 699 129 613 70</p>
         </div>
       </div>
-      <div style={{ maxWidth: 1280, margin: "48px auto 0", borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+      <div style={{ maxWidth: 1280, margin: "48px auto 0", borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
         <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.textMuted }}>© {new Date().getFullYear()} Schulmittel Blaschegg</span>
+        <div style={{ display: "flex", gap: 20 }}>
+          {[{ id: "impressum", label: "Impressum" }, { id: "agb", label: "AGB" }, { id: "datenschutz", label: "Datenschutz" }].map(l => (
+            <button key={l.id} onClick={() => setPage(l.id)} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.textMuted, padding: 0, textDecoration: "underline" }}>{l.label}</button>
+          ))}
+        </div>
         <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.textMuted }}>UID: ATU37758404</span>
       </div>
     </footer>
@@ -760,6 +765,63 @@ function UeberUns({ go }) {
   );
 }
 
+function Impressum() {
+  const s = { fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: "0 0 20px" };
+  const h = { fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, color: C.text, margin: "40px 0 16px" };
+  return (
+    <div style={{ paddingTop: 72 }}>
+      <section style={{ padding: "80px 32px 96px", background: C.bg }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <Heading overline="RECHTLICHES" title="IMPRESSUM"/>
+          <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "48px 40px" }}>
+            <h2 style={{ ...h, marginTop: 0 }}>ANGABEN GEM. § 5 ECG</h2>
+            <p style={s}><strong>Schulmittel Blaschegg</strong><br/>Michael Blaschegg<br/>Herstellung von sonstigen Kunststoffwaren a.n.g.</p>
+            <h2 style={h}>FIRMENSITZ</h2>
+            <p style={s}>Stücklbachstraße 13<br/>4813 Altmünster<br/>Österreich</p>
+            <h2 style={h}>KONTAKTDATEN</h2>
+            <p style={s}>E-Mail: <a href="mailto:blaschegg@traunseenet.at" style={{ color: C.accent, textDecoration: "none" }}>blaschegg@traunseenet.at</a><br/>Telefon: +43 (0) 7612 87147<br/>Fax: +43 (0) 7612 87147<br/>Mobil: +43 (0) 676 935 40 33</p>
+            <h2 style={h}>UNTERNEHMENSDATEN</h2>
+            <p style={s}>Umsatzsteueridentifikationsnummer: ATU37758404<br/>Unternehmensregister: R013F6512<br/>Gewerbebehörde: BH Gmunden<br/>Mitglied der Wirtschaftskammer Österreich</p>
+            <h2 style={h}>BANKVERBINDUNGEN</h2>
+            <p style={s}><strong>Österreich:</strong><br/>IBAN: AT88 3451 0000 0202 6441<br/>BIC: RZOOAT2L510</p>
+            <p style={s}><strong>Deutschland:</strong><br/>IBAN: DE22 7105 0000 0000 1254 68<br/>BIC: BYLADEM1BGL</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function Agb() {
+  return (
+    <div style={{ paddingTop: 72 }}>
+      <section style={{ padding: "80px 32px 96px", background: C.bg }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <Heading overline="RECHTLICHES" title="ALLGEMEINE GESCHÄFTSBEDINGUNGEN"/>
+          <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "48px 40px" }}>
+            <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75 }}>Die allgemeinen Geschäftsbedingungen werden in Kürze hier veröffentlicht. Bei Fragen kontaktieren Sie uns bitte unter <a href="mailto:blaschegg@traunseenet.at" style={{ color: C.accent, textDecoration: "none" }}>blaschegg@traunseenet.at</a>.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function Datenschutz() {
+  return (
+    <div style={{ paddingTop: 72 }}>
+      <section style={{ padding: "80px 32px 96px", background: C.bg }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <Heading overline="RECHTLICHES" title="DATENSCHUTZERKLÄRUNG"/>
+          <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "48px 40px" }}>
+            <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.75 }}>Die Datenschutzerklärung wird in Kürze hier veröffentlicht. Bei Fragen kontaktieren Sie uns bitte unter <a href="mailto:blaschegg@traunseenet.at" style={{ color: C.accent, textDecoration: "none" }}>blaschegg@traunseenet.at</a>.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState("home");
   const go = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -775,6 +837,9 @@ export default function App() {
         {page === "galerie" && <Galerie/>}
         {page === "ueber-uns" && <UeberUns go={go}/>}
         {page === "kontakt" && <Kontakt/>}
+        {page === "impressum" && <Impressum/>}
+        {page === "agb" && <Agb/>}
+        {page === "datenschutz" && <Datenschutz/>}
         <Footer setPage={go}/>
       </div>
     </CartProvider>
