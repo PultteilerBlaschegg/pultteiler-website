@@ -83,7 +83,7 @@ function Nav({ page, setPage }) {
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? C.bgCard : "transparent", borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.3s" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button onClick={() => { setPage("home"); setOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, padding: 0 }}>
-            <img src="/images/Klammer_2.png" alt="Pultteiler Klammer" style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4 }}/>
+            <img src="/images/Klammer_2.png" alt="Pultteiler Klammer" style={{ width: 56, height: 56, objectFit: "contain", borderRadius: 4 }}/>
             <span style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: 26, color: C.text, letterSpacing: "0.05em" }}>PULTTEILER</span>
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -366,7 +366,7 @@ function Footer({ setPage }) {
       <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 48 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-            <img src="/images/Klammer_2.png" alt="Pultteiler Klammer" style={{ width: 44, height: 44, objectFit: "cover", borderRadius: 4 }}/>
+            <img src="/images/Klammer_2.png" alt="Pultteiler Klammer" style={{ width: 44, height: 44, objectFit: "contain", borderRadius: 4 }}/>
             <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.text, letterSpacing: "0.05em" }}>PULTTEILER</span>
           </div>
           <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.7 }}>Direkt vom Hersteller. Der bewährte<br/>Pultteiler für Schultische —<br/>europaweit. Seit über 40 Jahren.</p>
@@ -668,36 +668,38 @@ function Kontakt() {
 }
 
 function Anleitung({ go }) {
-  const steps = [
-    { num: "01", title: "KLAMMER AUFSTECKEN", text: "Stecken Sie die Klammer aus dauerelastischem Kunststoff einfach auf die Tischkante. Sie passt auf alle gängigen Schultische mit einer Tischplattenstärke bis 3 cm — auch auf Schrägtische.", img: "/images/nahaufnahme.jpeg", alt: "Schritt 1: Pultteiler-Klammer auf Schultisch stecken" },
-    { num: "02", title: "TEILERPLATTE EINSETZEN", text: "Setzen Sie die Teilerplatte in die Klammer ein. Die Platte rastet sicher ein und steht sofort stabil.", img: "/images/koffer-gelb.jpg", alt: "Schritt 2: Teilerplatte in die Klammer einsetzen" },
-    { num: "03", title: "FERTIG — KONZENTRIERT ARBEITEN", text: "Der Pultteiler steht stabil und schafft einen eigenen, abgeschirmten Arbeitsplatz. Nach der Prüfung einfach abnehmen und zurück in den Holzkoffer.", img: "/images/klassenzimmer.png", alt: "Schritt 3: Fertiger Pultteiler am Schultisch im Klassenzimmer" },
-  ];
   return (
     <div style={{ paddingTop: 72 }}>
       <section style={{ padding: "80px 32px 96px", background: C.bg }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <Heading overline="AUFBAUANLEITUNG" title={"SO FUNKTIONIERT DER PULTTEILER\nAUFBAU IN 3 SCHRITTEN"} sub="Teilerplatte und Pultklammer — in wenigen Handgriffen aufgestellt." align="center"/>
           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {steps.map((s, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: i % 2 === 0 ? "1fr 1.2fr" : "1.2fr 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card" onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
-                  {i % 2 === 1 && <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}`, lineHeight: 1 }}>SCHRITT {s.num}</span>
-                    <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>{s.title}</h2>
-                    <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>{s.text}</p>
-                  </div>}
-                  <div style={{ background: C.bgElevated, borderLeft: i % 2 === 1 ? "none" : undefined, borderRight: i % 2 === 0 ? "none" : undefined, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, minHeight: 240 }}>
-                    <img src={s.img} alt={s.alt} style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: 240, display: "block" }}/>
-                  </div>
-                  {i % 2 === 0 && <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: `${C.accent}`, lineHeight: 1 }}>SCHRITT {s.num}</span>
-                    <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>{s.title}</h2>
-                    <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>{s.text}</p>
-                  </div>}
+            <Reveal delay={0.1}>
+              <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "40px 36px", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.accent, lineHeight: 1 }}>SCHRITT 01</span>
+                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>KLAMMER AUFSTECKEN</h2>
+                <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>Stecken Sie die Klammer aus dauerelastischem Kunststoff einfach auf die Tischkante. Sie passt auf alle gängigen Schultische mit einer Tischplattenstärke bis 3 cm — auch auf Schrägtische.</p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, padding: "40px 36px", transition: "border-color 0.3s" }} onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.accent, lineHeight: 1 }}>SCHRITT 02</span>
+                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>TEILERPLATTE EINSETZEN</h2>
+                <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>Setzen Sie die Teilerplatte in die Klammer ein. Die Platte rastet sicher ein und steht sofort stabil.</p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, display: "grid", gridTemplateColumns: "1.2fr 1fr", overflow: "hidden", transition: "border-color 0.3s" }} className="prod-card" onMouseEnter={e => e.currentTarget.style.borderColor = C.accent} onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 48, color: C.accent, lineHeight: 1 }}>SCHRITT 03</span>
+                  <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, color: C.text, margin: "12px 0 16px" }}>FERTIG — KONZENTRIERT ARBEITEN</h2>
+                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 15, color: C.textMuted, lineHeight: 1.7, margin: 0 }}>Der Pultteiler steht stabil und schafft einen eigenen, abgeschirmten Arbeitsplatz. Nach der Prüfung einfach abnehmen und zurück in den Holzkoffer.</p>
                 </div>
-              </Reveal>
-            ))}
+                <div style={{ background: C.bgElevated, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, minHeight: 240 }}>
+                  <img src="/images/koffer-gelb.jpg" alt="Holzkoffer mit Pultteilern" style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: 240, display: "block" }}/>
+                </div>
+              </div>
+            </Reveal>
           </div>
           <Reveal delay={0.35}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, marginTop: 2 }} className="contact-g">
