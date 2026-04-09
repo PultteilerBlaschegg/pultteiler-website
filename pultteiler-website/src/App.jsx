@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
 
 const C = {
-  bg: "#FFFFFF", bgCard: "#F7F6F3", bgElevated: "#EFEEE9", surface: "#E8E6E1",
-  text: "#1A1A1A", textMuted: "#71706B", accent: "#2D7D46", accentHover: "#359555",
-  white: "#FFF", border: "#E2E0DB", borderLight: "#D5D3CE", green: "#3D8A56", red: "#C44D3F",
-  dark: "#1A1A1A",
+  bg: "#F8FAFE", bgCard: "#F2F6FB", bgElevated: "#E8EFF8", surface: "#DDE6F0",
+  text: "#1A1F2E", textMuted: "#6B7280", accent: "#3B7FBF", accentHover: "#4A91D4",
+  white: "#FFF", border: "#D6DEE8", borderLight: "#C8D3DF", green: "#3B7FBF", red: "#C44D3F",
+  dark: "#1A1F2E",
 };
 
 const CartCtx = createContext();
