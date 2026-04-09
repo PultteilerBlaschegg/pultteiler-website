@@ -33,7 +33,7 @@ function useCart() { return useContext(CartCtx); }
 
 /*
   BILDER — diese Dateien müssen in /public/images/ liegen:
-  klassenzimmer.png, koffer-gelb.jpg, koffer-grau.jpg, Klammer.gif,
+  klassenzimmer.png, koffer-gelb.jpg, koffer-grau.jpg, Klammer_2.png,
   nahaufnahme.jpeg, pultteiler-2.jpg, pultteiler-einsatz.jpg, pultteiler-uni.png,
   pultteiler_gelb.png, pultteiler_grau.png,
   meduni-innsbruck_1.jpeg, meduni-innsbruck_2.jpeg
@@ -83,7 +83,7 @@ function Nav({ page, setPage }) {
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? C.bgCard : "transparent", borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent", transition: "all 0.3s" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button onClick={() => { setPage("home"); setOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, padding: 0 }}>
-            <img src="/images/Klammer.gif" alt="Pultteiler Klammer" style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4 }}/>
+            <img src="/images/Klammer_2.png" alt="Pultteiler Klammer" style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4 }}/>
             <span style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: 26, color: C.text, letterSpacing: "0.05em" }}>PULTTEILER</span>
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -275,7 +275,7 @@ function CartSidebar({ onClose }) {
               <input type="text" name="Land" placeholder="Land *" required defaultValue={region === "CH" ? "Schweiz" : "Österreich"} style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <input type="email" name="email" placeholder="E-Mail Adresse *" required style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <input type="tel" name="Telefon" placeholder="Telefonnummer (optional)" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
-              <input type="text" name="UID-Nummer" placeholder="UID-Nummer (optional, für steuerfreie Lieferung)" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
+              {region === "AT" && <input type="text" name="UID-Nummer" placeholder="UID-Nummer (optional, für steuerfreie Lieferung nach DE)" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>}
               <input type="text" name="Einkäufergruppe" placeholder="Einkäufergruppe (optional, für österr. Bundesschulen)" style={inp} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <textarea name="Anmerkungen" placeholder="Anmerkungen zur Bestellung (optional)" rows={3} style={{ ...inp, resize: "vertical" }} onFocus={e => e.target.style.borderColor = C.accent} onBlur={e => e.target.style.borderColor = C.border}/>
               <button type="submit" style={{ width: "100%", background: C.dark, color: C.white, border: "none", padding: "16px", fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", cursor: "pointer", marginTop: 8 }}>
@@ -366,7 +366,7 @@ function Footer({ setPage }) {
       <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 48 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-            <img src="/images/Klammer.gif" alt="Pultteiler Klammer" style={{ width: 44, height: 44, objectFit: "cover", borderRadius: 4 }}/>
+            <img src="/images/Klammer_2.png" alt="Pultteiler Klammer" style={{ width: 44, height: 44, objectFit: "cover", borderRadius: 4 }}/>
             <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.text, letterSpacing: "0.05em" }}>PULTTEILER</span>
           </div>
           <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.7 }}>Direkt vom Hersteller. Der bewährte<br/>Pultteiler für Schultische —<br/>europaweit. Seit über 40 Jahren.</p>
