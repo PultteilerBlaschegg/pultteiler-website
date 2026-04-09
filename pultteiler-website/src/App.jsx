@@ -795,7 +795,7 @@ function Impressum() {
             <h2 style={h}>FIRMENSITZ</h2>
             <p style={s}>Stücklbachstraße 13<br/>4813 Altmünster<br/>Österreich</p>
             <h2 style={h}>KONTAKTDATEN</h2>
-            <p style={s}>E-Mail: <a href="mailto:blaschegg@traunseenet.at" style={{ color: C.accent, textDecoration: "none" }}>blaschegg@traunseenet.at</a><br/>Telefon: +43 (0) 676 935 40 33<br/>Mobil: +43 (0) 699 129 613 70</p>
+            <p style={s}>E-Mail: <a href="mailto:blaschegg@traunseenet.at" style={{ color: C.accent, textDecoration: "none" }}>blaschegg@traunseenet.at</a><br/>Telefon:<br/>+43 (0) 676 935 40 33<br/>+43 (0) 699 129 613 70</p>
             <h2 style={h}>UNTERNEHMENSDATEN</h2>
             <p style={s}>Umsatzsteueridentifikationsnummer: ATU37758404<br/>Unternehmensregister: R013F6512<br/>Gewerbebehörde: BH Gmunden<br/>Mitglied der Wirtschaftskammer Österreich</p>
             <h2 style={h}>BANKVERBINDUNGEN</h2>
