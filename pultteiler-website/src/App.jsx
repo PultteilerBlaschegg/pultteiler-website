@@ -504,10 +504,14 @@ function Produkte({ go }) {
   if (!regionSelected) return (
     <div style={{ paddingTop: 72 }}>
       <section style={{ minHeight: "80vh", display: "flex", alignItems: "center", padding: "80px 32px", background: `linear-gradient(135deg, ${C.bg} 0%, #D5EFEF 50%, #E8F4E8 100%)`, position: "relative", overflow: "hidden" }}>
-        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 100, left: -20, width: 120, opacity: 0.1, transform: "rotate(-25deg)" }}/>
-        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 80, right: -10, width: 100, opacity: 0.1, transform: "rotate(20deg)" }}/>
-        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", bottom: 60, left: 40, width: 90, opacity: 0.08, transform: "rotate(15deg)" }}/>
-        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", bottom: 80, right: 60, width: 110, opacity: 0.08, transform: "rotate(-10deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 80, left: -10, width: 140, opacity: 0.12, transform: "rotate(-25deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 60, right: -20, width: 120, opacity: 0.12, transform: "rotate(20deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", bottom: 40, left: 30, width: 110, opacity: 0.1, transform: "rotate(15deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", bottom: 60, right: 40, width: 130, opacity: 0.1, transform: "rotate(-10deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 200, left: "20%", width: 90, opacity: 0.08, transform: "rotate(35deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 160, right: "18%", width: 100, opacity: 0.08, transform: "rotate(-18deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", bottom: 150, left: "40%", width: 80, opacity: 0.06, transform: "rotate(8deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 350, right: "35%", width: 70, opacity: 0.07, transform: "rotate(-30deg)", filter: "sepia(1) saturate(3) hue-rotate(-30deg)" }}/>
         <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
           <img src="/images/Klammer_2.png" alt="Pultteiler" style={{ width: 64, height: 64, objectFit: "contain", margin: "0 auto 16px", display: "block" }}/>
           <Heading overline="ONLINE-SHOP" title="ONLINESHOP" align="center"/>
@@ -535,6 +539,7 @@ function Produkte({ go }) {
     <div style={{ paddingTop: 72 }}>
       <section style={{ padding: "80px 32px 96px", background: C.bg }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <button onClick={() => setRegionSelected(false)} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: C.accent, fontWeight: 700, letterSpacing: "0.08em", padding: 0, marginBottom: 32 }}>← ZURÜCK ZUR AUSWAHL</button>
           <Heading overline="ONLINE-SHOP" title="PRODUKTE" sub={region === "CH" ? "" : "Alle Preise inkl. MwSt und Lieferung für Österreich und Deutschland."}/>
           {region === "AT" && <Reveal><div style={{ display: "flex", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
             <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(-3deg)", border: "2px solid #D4AD2E" }}>
@@ -552,7 +557,6 @@ function Produkte({ go }) {
               <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>LIEFERUNG<br/>INKLUSIVE</span>
             </div>
           </div></Reveal>}
-          <button onClick={() => setRegionSelected(false)} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", padding: 0, marginBottom: 16 }}>← ZURÜCK ZUR AUSWAHL</button>
           <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 48 }}>
             {SETS.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.1}>
