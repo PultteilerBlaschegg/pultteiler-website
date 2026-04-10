@@ -442,6 +442,11 @@ function Home({ go }) {
                   <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>MIT DEUTSCHER<br/>UID-NUMMER<br/>STEUERFREI</span>
                 </div>
               </div></Reveal>
+              <Reveal delay={0.12}><div style={{ display: "flex", justifyContent: "center" }}>
+                <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(1deg)", border: "2px solid #D4AD2E" }}>
+                  <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>STEUERFREIE<br/>UNVERZOLLTE<br/>LIEFERUNG IN<br/>DIE SCHWEIZ</span>
+                </div>
+              </div></Reveal>
               <Reveal delay={0.15}><div style={{ overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/meduni-innsbruck_2.jpeg" alt="Meduni Innsbruck Labor" style={{ width: "100%", height: 170, objectFit: "cover", display: "block" }}/></div></Reveal>
               <Reveal delay={0.25}><div style={{ overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/klassenzimmer.png" alt="Klassenzimmer im Einsatz" style={{ width: "100%", height: 170, objectFit: "cover", display: "block" }}/></div></Reveal>
               <Reveal delay={0.35}><div style={{ overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/pultteiler-einsatz.jpg" alt="EDV-Raum mit Pultteiler" style={{ width: "100%", height: 170, objectFit: "cover", display: "block" }}/></div></Reveal>
@@ -491,22 +496,63 @@ function Home({ go }) {
   );
 }
 
-function Produkte() {
-  const { region, getPrice } = useCart();
+function Produkte({ go }) {
+  const { region, setRegion, getPrice, clear } = useCart();
+  const [regionSelected, setRegionSelected] = useState(false);
+  const selectRegion = (r) => { clear(); setRegion(r); setRegionSelected(true); };
+
+  if (!regionSelected) return (
+    <div style={{ paddingTop: 72 }}>
+      <section style={{ minHeight: "80vh", display: "flex", alignItems: "center", padding: "80px 32px", background: `linear-gradient(135deg, ${C.bg} 0%, #D5EFEF 50%, #E8F4E8 100%)`, position: "relative", overflow: "hidden" }}>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 100, left: -20, width: 120, opacity: 0.1, transform: "rotate(-25deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", top: 80, right: -10, width: 100, opacity: 0.1, transform: "rotate(20deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", bottom: 60, left: 40, width: 90, opacity: 0.08, transform: "rotate(15deg)" }}/>
+        <img src="/images/Klammer_2.png" alt="" style={{ position: "absolute", bottom: 80, right: 60, width: 110, opacity: 0.08, transform: "rotate(-10deg)" }}/>
+        <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+          <img src="/images/Klammer_2.png" alt="Pultteiler" style={{ width: 64, height: 64, objectFit: "contain", margin: "0 auto 16px", display: "block" }}/>
+          <Heading overline="ONLINE-SHOP" title="ONLINESHOP" align="center"/>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <button onClick={() => selectRegion("AT")} style={{ padding: "32px 40px", background: C.accent, border: "none", cursor: "pointer", transition: "all 0.2s", width: 260, boxShadow: "0 4px 16px rgba(26,158,158,0.3)" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(26,158,158,0.4)"; }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(26,158,158,0.3)"; }}>
+              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.white, marginBottom: 4 }}>ÖSTERREICH & DEUTSCHLAND</div>
+              <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.8)" }}>Preise inkl. MwSt und Lieferung</div>
+            </button>
+            <button onClick={() => selectRegion("CH")} style={{ padding: "32px 40px", background: C.accent, border: "none", cursor: "pointer", transition: "all 0.2s", width: 260, boxShadow: "0 4px 16px rgba(26,158,158,0.3)" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(26,158,158,0.4)"; }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(26,158,158,0.3)"; }}>
+              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: C.white, marginBottom: 4 }}>SCHWEIZ</div>
+              <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.8)" }}>Steuerfrei, unverzollt, inkl. Lieferung</div>
+            </button>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
+            <div onClick={() => go("kontakt")} style={{ width: 160, height: 100, background: C.accent, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "pointer", boxShadow: "4px 6px 16px rgba(26,158,158,0.25)", transform: "rotate(-1deg)", border: `2px solid ${C.accentHover}`, transition: "transform 0.2s" }} onMouseEnter={e => e.currentTarget.style.transform = "rotate(-1deg) scale(1.05)"} onMouseLeave={e => e.currentTarget.style.transform = "rotate(-1deg)"}>
+              <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, color: C.white, lineHeight: 1.4, letterSpacing: "0.04em" }}>ANDERE LÄNDER<br/>AUF ANFRAGE</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+
   return (
     <div style={{ paddingTop: 72 }}>
       <section style={{ padding: "80px 32px 96px", background: C.bg }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <Heading overline="ONLINE-SHOP" title="PRODUKTE" sub={region === "CH" ? "Preise steuerfrei, unverzollt, inklusive Lieferung in die Schweiz." : "Alle Preise inkl. MwSt und Lieferung für Österreich und Deutschland."}/>
-          <Reveal><div style={{ display: "flex", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
+          <Heading overline="ONLINE-SHOP" title="PRODUKTE" sub={region === "CH" ? "" : "Alle Preise inkl. MwSt und Lieferung für Österreich und Deutschland."}/>
+          {region === "AT" && <Reveal><div style={{ display: "flex", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
             <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(-3deg)", border: "2px solid #D4AD2E" }}>
               <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>E-RECHNUNGEN<br/>FÜR BUNDES-<br/>SCHULEN<br/>MIT IHRER EKG</span>
             </div>
             <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(2deg)", border: "2px solid #D4AD2E" }}>
               <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>MIT DEUTSCHER<br/>UID-NUMMER<br/>STEUERFREI</span>
             </div>
-          </div></Reveal>
-          <RegionToggle/>
+          </div></Reveal>}
+          {region === "CH" && <Reveal><div style={{ display: "flex", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
+            <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(-2deg)", border: "2px solid #D4AD2E" }}>
+              <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>STEUERFREIE<br/>UNVERZOLLTE<br/>LIEFERUNG IN<br/>DIE SCHWEIZ</span>
+            </div>
+            <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(2deg)", border: "2px solid #D4AD2E" }}>
+              <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>LIEFERUNG<br/>INKLUSIVE</span>
+            </div>
+          </div></Reveal>}
+          <button onClick={() => setRegionSelected(false)} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", padding: 0, marginBottom: 16 }}>← ZURÜCK ZUR AUSWAHL</button>
           <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 48 }}>
             {SETS.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.1}>
@@ -621,29 +667,23 @@ function Kontakt() {
     fd.forEach((v, k) => { data[k] = v; });
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/blaschegg@traunseenet.at", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-          _subject: "Neue Kontaktanfrage über pultteiler.eu",
-          _template: "table",
-          _captcha: "false",
-        }),
+      await loadEmailJS();
+      await window.emailjs.send("service_cobcbsg", "template_7kke6e4", {
+        kunde_email: data["email"] || "",
+        order_nr: "KONTAKT",
+        region: "Kontaktanfrage",
+        bestellung: data["Nachricht"] || "",
+        versand: "–",
+        gesamt: "–",
+        adresse: data["Name"] || "",
+        telefon: "–",
+        uid: "–",
+        einkaufergruppe: "–",
+        anmerkungen: "Kontaktanfrage über pultteiler.eu",
       });
-
-      const result = await res.json();
-
-      if (res.ok && result.success) {
-        setSent(true);
-      } else {
-        setContactError(result.message || "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.");
-      }
+      setSent(true);
     } catch (err) {
-      setContactError("Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an blaschegg@traunseenet.at");
+      setContactError("Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an blaschegg@traunseenet.at");
     } finally {
       setContactSending(false);
     }
@@ -758,7 +798,7 @@ function UeberUns({ go }) {
     <div style={{ paddingTop: 72 }}>
       <section style={{ padding: "80px 32px 96px", background: C.bg }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <Heading overline="ÜBER UNS" title={"SCHULMITTEL BLASCHEGG\nAUS ALTMÜNSTER AM TRAUNSEE"} sub="Direkt vom Hersteller — seit über 40 Jahren für Schulen in Österreich, Deutschland und der Schweiz."/>
+          <Heading overline="ÜBER UNS" title={"SCHULMITTEL BLASCHEGG\nAUS ALTMÜNSTER AM TRAUNSEE"} sub="Direkt vom Hersteller — seit über 40 Jahren für Schulen — europaweit."/>
           <Reveal>
             <div style={{ border: `1px solid ${C.border}`, overflow: "hidden", marginBottom: 2, background: C.bgCard }}>
               <img src="/images/meduni-innsbruck_2.jpeg" alt="Pultteiler im Einsatz an der Medizinischen Universität Innsbruck" style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }}/>
@@ -953,14 +993,14 @@ function Datenschutz() {
               Die Verarbeitung erfolgt auf Grundlage unseres berechtigten Interesses an der Bereitstellung und Sicherheit der Website (Art. 6 Abs. 1 lit. f DSGVO). Vercel nimmt am EU-U.S. Data Privacy Framework teil, sodass ein angemessenes Datenschutzniveau für die Datenübermittlung in die USA gewährleistet ist. Weitere Informationen finden Sie unter <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: C.accent, textDecoration: "none" }}>vercel.com/legal/privacy-policy</a>.
             </p>
 
-            <h2 style={h}>4. KONTAKTFORMULAR</h2>
+            <h2 style={h}>4. GOOGLE FONTS</h2>
             <p style={s}>
-              Wenn Sie uns über das Kontaktformular auf der Website eine Nachricht senden, werden Ihre Angaben (Name, E-Mail-Adresse, Nachricht) an den Dienst <strong>FormSubmit.co</strong> übermittelt und von dort per E-Mail an uns weitergeleitet. Die Verarbeitung Ihrer Daten erfolgt zum Zweck der Bearbeitung Ihrer Anfrage auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) bzw. unseres berechtigten Interesses an der Beantwortung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO). Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nach Abschluss der Bearbeitung für sechs Monate gespeichert, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.
+              Diese Website nutzt zur einheitlichen Darstellung von Schriftarten sogenannte Google Fonts, bereitgestellt von <strong>Google Ireland Ltd.</strong> (Gordon House, Barrow Street, Dublin 4, Irland). Beim Aufruf einer Seite lädt Ihr Browser die benötigten Schriftarten direkt von Google-Servern. Dabei wird Ihre IP-Adresse an Google übermittelt. Die Verarbeitung erfolgt auf Grundlage unseres berechtigten Interesses an einer technisch einwandfreien und ansprechenden Darstellung der Website (Art. 6 Abs. 1 lit. f DSGVO). Weitere Informationen finden Sie unter <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: C.accent, textDecoration: "none" }}>policies.google.com/privacy</a>.
             </p>
 
-            <h2 style={h}>5. BESTELLFORMULAR</h2>
+            <h2 style={h}>5. KONTAKT- UND BESTELLFORMULAR</h2>
             <p style={s}>
-              Wenn Sie eine Bestellung über unseren Online-Shop aufgeben, werden die von Ihnen angegebenen Daten (Name/Schule, Ansprechperson, Adresse, E-Mail, Telefonnummer, UID-Nummer, Einkäufergruppe, Anmerkungen) über den Dienst <strong>EmailJS</strong> (EmailJS, Inc.) an uns übermittelt. Die Verarbeitung dieser Daten ist zur Durchführung vorvertraglicher Maßnahmen und zur Vertragserfüllung erforderlich (Art. 6 Abs. 1 lit. b DSGVO). Ihre Bestelldaten werden für die Dauer der gesetzlichen Aufbewahrungspflichten (in der Regel sieben Jahre gem. § 132 BAO) gespeichert.
+              Wenn Sie uns über das Kontaktformular eine Nachricht senden oder eine Bestellung über unseren Online-Shop aufgeben, werden die von Ihnen angegebenen Daten über den Dienst <strong>EmailJS</strong> (EmailJS, Inc.) an uns übermittelt. Die Verarbeitung Ihrer Kontaktdaten erfolgt auf Grundlage Ihres berechtigten Interesses an der Beantwortung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO). Die Verarbeitung Ihrer Bestelldaten ist zur Durchführung vorvertraglicher Maßnahmen und zur Vertragserfüllung erforderlich (Art. 6 Abs. 1 lit. b DSGVO). Bestelldaten werden für die Dauer der gesetzlichen Aufbewahrungspflichten (in der Regel sieben Jahre gem. § 132 BAO) gespeichert. Kontaktanfragen werden nach Abschluss der Bearbeitung für sechs Monate gespeichert, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.
             </p>
 
             <h2 style={h}>6. EXTERNE INHALTE UND CDN</h2>
@@ -983,8 +1023,8 @@ function Datenschutz() {
               Eine Weitergabe Ihrer personenbezogenen Daten an Dritte erfolgt nur, soweit dies zur Vertragserfüllung erforderlich ist (z.B. an Paketdienstleister für den Versand Ihrer Bestellung) oder eine gesetzliche Verpflichtung besteht. Im Einzelnen nutzen wir folgende Auftragsverarbeiter:
             </p>
             {bullet("Vercel Inc. (Hosting)")}
-            {bullet("FormSubmit.co (Kontaktformular)")}
-            {bullet("EmailJS, Inc. (Bestellabwicklung per E-Mail)")}
+            {bullet("Google Ireland Ltd. (Google Fonts)")}
+            {bullet("EmailJS, Inc. (Kontakt- und Bestellabwicklung per E-Mail)")}
 
             <h2 style={h}>10. DATENÜBERMITTLUNG IN DRITTLÄNDER</h2>
             <p style={s}>
@@ -1054,15 +1094,8 @@ export default function App() {
   return (
     <CartProvider>
       <div style={{ background: C.bg, minHeight: "100vh", color: C.text }}>
-        <style>{`
-          @font-face { font-family: 'Bebas Neue'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/bebas-neue-latin-400-normal.woff2') format('woff2'); }
-          @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300; font-display: swap; src: url('/fonts/inter-tight-latin-300-normal.woff2') format('woff2'); }
-          @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/inter-tight-latin-400-normal.woff2') format('woff2'); }
-          @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/inter-tight-latin-500-normal.woff2') format('woff2'); }
-          @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/inter-tight-latin-600-normal.woff2') format('woff2'); }
-          @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/inter-tight-latin-700-normal.woff2') format('woff2'); }
-          *, *::before, *::after { box-sizing: border-box; } body { margin: 0; background: ${C.bg}; } ::selection { background: ${C.accent}; color: ${C.white}; } @media (max-width: 768px) { .desk-nav { display: none !important; } .mob-btn { display: block !important; } .hero-g, .prod-card, .contact-g { grid-template-columns: 1fr !important; } .hero-circle { display: none !important; } }
-        `}</style>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+        <style>{`*, *::before, *::after { box-sizing: border-box; } body { margin: 0; background: ${C.bg}; } ::selection { background: ${C.accent}; color: ${C.white}; } @media (max-width: 768px) { .desk-nav { display: none !important; } .mob-btn { display: block !important; } .hero-g, .prod-card, .contact-g { grid-template-columns: 1fr !important; } .hero-circle { display: none !important; } }`}</style>
         <Nav page={page} setPage={go}/>
         {page === "home" && <Home go={go}/>}
         {page === "produkte" && <Produkte go={go}/>}
