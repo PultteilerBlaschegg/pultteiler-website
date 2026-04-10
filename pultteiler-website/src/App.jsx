@@ -434,17 +434,15 @@ function Home({ go }) {
               <Reveal delay={0.3}><div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}><Btn onClick={() => go("produkte")}>ZUM SHOP</Btn><Btn onClick={() => go("kontakt")} variant="secondary">KONTAKT AUFNEHMEN →</Btn></div></Reveal>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <Reveal delay={0.1}><div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
-                <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(-3deg)", border: "2px solid #D4AD2E" }}>
-                  <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>E-RECHNUNGEN<br/>FÜR BUNDES-<br/>SCHULEN<br/>MIT IHRER EKG</span>
+              <Reveal delay={0.1}><div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+                <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 10, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(-3deg)", border: "2px solid #D4AD2E" }}>
+                  <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10.5, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>E-RECHNUNGEN<br/>FÜR BUNDES-<br/>SCHULEN<br/>MIT IHRER EKG</span>
                 </div>
-                <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(2deg)", border: "2px solid #D4AD2E" }}>
-                  <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 11, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>MIT DEUTSCHER<br/>UID-NUMMER<br/>STEUERFREI</span>
+                <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 10, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(2deg)", border: "2px solid #D4AD2E" }}>
+                  <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10.5, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>MIT DEUTSCHER<br/>UID-NUMMER<br/>STEUERFREI</span>
                 </div>
-              </div></Reveal>
-              <Reveal delay={0.12}><div style={{ display: "flex", justifyContent: "center" }}>
-                <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 12, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(1deg)", border: "2px solid #D4AD2E" }}>
-                  <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>STEUERFREIE<br/>UNVERZOLLTE<br/>LIEFERUNG IN<br/>DIE SCHWEIZ</span>
+                <div style={{ width: 160, height: 100, background: "#F0C645", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 10, cursor: "default", boxShadow: "4px 6px 16px rgba(0,0,0,0.15)", transform: "rotate(-1deg)", border: "2px solid #D4AD2E" }}>
+                  <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 10.5, fontWeight: 700, color: C.dark, lineHeight: 1.4, letterSpacing: "0.04em" }}>STEUERFREIE<br/>UNVERZOLLTE<br/>LIEFERUNG IN<br/>DIE SCHWEIZ</span>
                 </div>
               </div></Reveal>
               <Reveal delay={0.15}><div style={{ overflow: "hidden", border: `1px solid ${C.border}`, background: C.bgCard }}><img src="/images/meduni-innsbruck_2.jpeg" alt="Meduni Innsbruck Labor" style={{ width: "100%", height: 170, objectFit: "cover", display: "block" }}/></div></Reveal>
