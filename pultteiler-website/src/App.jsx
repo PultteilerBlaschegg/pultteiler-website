@@ -1074,7 +1074,8 @@ function Datenschutz() {
 
 export default function App() {
   const [page, setPage] = useState("home");
-  const go = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const [shopKey, setShopKey] = useState(0);
+  const go = (p) => { if (p === "produkte") setShopKey(k => k + 1); setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
   useEffect(() => {
     const titles = { home: "Pultteiler — Der bewährte Sichtschutz für Schultische", produkte: "Produkte & Preise — Pultteiler", anleitung: "So funktioniert's — Pultteiler", galerie: "Referenzen — Pultteiler", "ueber-uns": "Über uns — Pultteiler", kontakt: "Kontakt — Pultteiler", impressum: "Impressum — Pultteiler", agb: "AGB — Pultteiler", datenschutz: "Datenschutz — Pultteiler" };
@@ -1102,7 +1103,7 @@ export default function App() {
         <style>{`*, *::before, *::after { box-sizing: border-box; } body { margin: 0; background: ${C.bg}; } ::selection { background: ${C.accent}; color: ${C.white}; } @media (max-width: 768px) { .desk-nav { display: none !important; } .mob-btn { display: block !important; } .hero-g, .prod-card, .contact-g { grid-template-columns: 1fr !important; } .hero-circle { display: none !important; } }`}</style>
         <Nav page={page} setPage={go}/>
         {page === "home" && <Home go={go}/>}
-        {page === "produkte" && <Produkte go={go}/>}
+        {page === "produkte" && <Produkte key={shopKey} go={go}/>}
         {page === "anleitung" && <Anleitung go={go}/>}
         {page === "galerie" && <Galerie/>}
         {page === "ueber-uns" && <UeberUns go={go}/>}
