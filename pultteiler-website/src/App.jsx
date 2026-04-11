@@ -598,21 +598,6 @@ function Produkte({ go }) {
               </div>
             </>
           )}
-          <Reveal delay={0.2}>
-            <div style={{ marginTop: 32, background: `${C.green}08`, border: `1px solid ${C.green}25`, padding: "24px 28px", display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <div style={{ width: 32, height: 32, background: `${C.green}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke={C.green} strokeWidth="2" strokeLinecap="square"/></svg>
-              </div>
-              <div>
-                <h4 style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.text, margin: "0 0 6px" }}>VERSAND & ZAHLUNG</h4>
-                {region === "CH" ? (
-                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>Schweiz: <span style={{ color: C.green, fontWeight: 600 }}>Lieferung inklusive</span>. Unverzollte Lieferung, steuerfrei. Zahlung per Rechnung. Ersatzteile auf Anfrage.</p>
-                ) : (
-                  <p style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>AT & DE: <span style={{ color: C.green, fontWeight: 600 }}>Kostenloser Versand bei Koffer-Bestellungen</span>. Ersatzteile: € 8,70 Versand. Zahlung per Rechnung. Steuerfreie Lieferung nach DE mit UID. E-Rechnungen für österr. Bundesschulen.</p>
-                )}
-              </div>
-            </div>
-          </Reveal>
         </div>
       </section>
     </div>
